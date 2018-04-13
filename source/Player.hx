@@ -25,8 +25,8 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
 		
-		animation.add("Idle", [4, 6]);
-		animation.add("Walk", [0, 1, 2, 1]);
+		animation.add("Idle", [0, 1, 2, 3], 2);
+		animation.add("Walk", [12, 13, 14], 10);
 		
 		
 		drag.set(50, 50);
