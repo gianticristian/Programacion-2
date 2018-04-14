@@ -27,11 +27,20 @@ class Player extends FlxSprite
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Walk", [12, 13, 14], 10);
+		//animation.add("Jump", [],);
+		animation.add("Hurt", [6]);
 		
 		
 		drag.set(50, 50);
 		acceleration.y = gravity;
 	}
+	
+	override public function update (elapsed : Float)
+    {
+        Movement();           
+        Input();
+		super.update(elapsed);
+    }
 	
 	private function Input () : Void
     {
@@ -46,7 +55,7 @@ class Player extends FlxSprite
     {
         if (left)
 		{
-			velocity.x += -speed;
+			velocity.x -= speed;
 			facing = FlxObject.LEFT;
 			animation.play("Walk");
 		}   
@@ -61,18 +70,13 @@ class Player extends FlxSprite
 			velocity.x = 0;
 			animation.play("Idle");
 		}
-			
             
 		if ((isTouching(FlxObject.DOWN)) && (jump))
 			velocity.y -= jumpSpeed;		
     }
-   
-    override public function update (elapsed : Float)
-    {
-        Movement();           
-        Input();
-		super.update(elapsed);
-    }
 	
-	
+	private function Hurt()
+	{
+		animation.play("Hurt");
+	}
 }
