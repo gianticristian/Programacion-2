@@ -7,9 +7,10 @@ import flixel.FlxObject;
 class Player extends FlxSprite
 {
 	//Movement
-    private var speed : Float = 25;
-    private var jumpSpeed : Float = 1000;
-    private var gravity : Float = 2500;
+    private var speed : Float = 100;
+	private var speedMax: Float = 300;
+    private var jumpSpeed : Float = 500;
+    private var gravity : Float = 1000;
 	//Input
     private var left : Bool;
     private var right : Bool;
@@ -31,14 +32,14 @@ class Player extends FlxSprite
 		animation.add("Hurt", [6]);
 		
 		
-		drag.set(50, 50);
+		drag.set(1500, 1000);
 		acceleration.y = gravity;
 	}
 	
 	override public function update (elapsed : Float)
-    {
-        Movement();           
-        Input();
+    { 
+		Input();
+		Movement();     
 		super.update(elapsed);
     }
 	
@@ -53,27 +54,62 @@ class Player extends FlxSprite
 	
 	private function Movement () : Void
     {
+		trace(velocity.x);
+		
         if (left)
 		{
-			velocity.x -= speed;
+			//if (facing == FlxObject.RIGHT)
+			//	acceleration.x = 0;
+			
+			acceleration.x -= speed;
 			facing = FlxObject.LEFT;
 			animation.play("Walk");
 		}   
         else if (right)
 		{
-			velocity.x += speed;
+			/*
+			if (facing == FlxObject.LEFT)
+			{
+				acceleration.x = 0;
+				trace(facing);
+			}
+			*/	
+				
+			/*
+			if (acceleration.x < 0)
+			{
+				acceleration.x = 0;
+				trace(acceleration.x);
+			}
+			*/
+				
+				
+			acceleration.x += speed;
 			facing = FlxObject.RIGHT;
 			animation.play("Walk");
 		}
 		else
 		{
-			velocity.x = 0;
+			//velocity.x = 0;
+			acceleration.x = 0;
 			animation.play("Idle");
 		}
+		
+		if (acceleration.x <= -speedMax)
+			acceleration.x = -speedMax;
+		
+		if (acceleration.x >= speedMax)
+			acceleration.x = speedMax;
+		
             
 		if ((isTouching(FlxObject.DOWN)) && (jump))
-			velocity.y -= jumpSpeed;		
+			Jump();
     }
+	
+	private function Jump()
+	{
+		velocity.y -= jumpSpeed;	
+	}
 	
 	private function Hurt()
 	{

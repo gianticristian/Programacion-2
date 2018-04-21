@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxGame;
 import openfl.display.Sprite;
 
@@ -9,7 +10,10 @@ class Main extends Sprite
 	{
 		super();
 		//addChild(new FlxGame(800, 600, MenuState));
-		addChild(new FlxGame(800, 600, State001));
-
+		addChild(new FlxGame(800, 600, PlayState));
+		
+		// debug
+		//FlxG.debugger.visible = true;
+		//FlxG.debugger.drawDebug = true;
 	}
 }
