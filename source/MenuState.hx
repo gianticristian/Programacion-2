@@ -44,6 +44,6 @@ class MenuState extends FlxState
 	
 	private function StartPlaying () 
 	{
-		FlxG.switchState(new State001());								// Carga el primer escenario
+		FlxG.switchState(new PlayState());								// Carga el primer escenario
 	}
 }

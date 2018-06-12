@@ -7,9 +7,9 @@ import flixel.FlxObject;
 class Player extends FlxSprite
 {
 	//Movement
-    private var speed : Float = 100;
-	private var speedMax: Float = 300;
-    private var jumpSpeed : Float = 500;
+    private var speed : Float = 250;
+	private var rotationSpeed = 2;
+    private var jumpSpeed : Float = 1500;
     private var gravity : Float = 1000;
 	//Input
     private var left : Bool;
@@ -25,14 +25,14 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
-		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Walk", [12, 13, 14], 10);
 		//animation.add("Jump", [],);
 		animation.add("Hurt", [6]);
 		
-		
-		drag.set(1500, 1000);
+		maxVelocity.x = 350;
+		maxVelocity.y = 450;
+		drag.set(1000, 1000);
 		acceleration.y = gravity;
 	}
 	
@@ -54,54 +54,37 @@ class Player extends FlxSprite
 	
 	private function Movement () : Void
     {
-		trace(velocity.x);
-		
         if (left)
 		{
-			//if (facing == FlxObject.RIGHT)
-			//	acceleration.x = 0;
-			
+			if (facing == FlxObject.RIGHT)
+				velocity.x /= rotationSpeed;
+				
 			acceleration.x -= speed;
+			if (acceleration.x < maxVelocity.x)
+				acceleration.x = -maxVelocity.x;
+				
 			facing = FlxObject.LEFT;
 			animation.play("Walk");
 		}   
-        else if (right)
+        if (right)
 		{
-			/*
 			if (facing == FlxObject.LEFT)
-			{
-				acceleration.x = 0;
-				trace(facing);
-			}
-			*/	
-				
-			/*
-			if (acceleration.x < 0)
-			{
-				acceleration.x = 0;
-				trace(acceleration.x);
-			}
-			*/
-				
-				
+				velocity.x /= rotationSpeed;
+			
 			acceleration.x += speed;
+			if (acceleration.x > maxVelocity.x)
+				acceleration.x = maxVelocity.x;
+			
 			facing = FlxObject.RIGHT;
-			animation.play("Walk");
+			animation.play("Walk");		
 		}
-		else
+		
+		if (!left && !right)
 		{
-			//velocity.x = 0;
 			acceleration.x = 0;
 			animation.play("Idle");
 		}
-		
-		if (acceleration.x <= -speedMax)
-			acceleration.x = -speedMax;
-		
-		if (acceleration.x >= speedMax)
-			acceleration.x = speedMax;
-		
-            
+	      
 		if ((isTouching(FlxObject.DOWN)) && (jump))
 			Jump();
     }

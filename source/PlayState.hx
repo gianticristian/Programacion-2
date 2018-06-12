@@ -22,6 +22,10 @@ class PlayState extends FlxState
 	public var floor:FlxObject;
 	public var exit:FlxSprite;
 	
+	// Debug
+	public var player_acceleration:FlxText;
+	public var player_velocity:FlxText;
+	
 	
 	override public function create () : Void 
 	{
@@ -44,6 +48,16 @@ class PlayState extends FlxState
 		add(level.foregroundTiles);
 		
 		
+		player_acceleration = new FlxText(500);
+		player_acceleration.setFormat("assets/fonts/monofonto.ttf", 20, FlxColor.BLACK, FlxTextAlign.CENTER);
+		player_acceleration.antialiasing = true;
+		add(player_acceleration);
+		
+		player_velocity = new FlxText(700);
+		player_velocity.setFormat("assets/fonts/monofonto.ttf", 20, FlxColor.BLACK, FlxTextAlign.CENTER);
+		player_velocity.antialiasing = true;
+		add(player_velocity);
+		
 		super.create();
 	}
 	
@@ -56,5 +70,11 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		level.collideWithLevel(player);
+		
+		
+		player_acceleration.text = "Acceleration: " + player.acceleration.x;
+		player_acceleration.x = player.x - 100;
+		player_velocity.text = "Velocity: " + player.velocity.x;
+		player_velocity.x = player.x + 100;
 	}
 }

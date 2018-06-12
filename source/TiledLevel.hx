@@ -113,11 +113,6 @@ class TiledLevel extends TiledMap
 				foregroundTiles.add(tilemap);
 				collidableTileLayers.push(tilemap);
 			}
-			
-			
-			trace(collidableTileLayers.length);
-			
-			
 		}
 	}
 
