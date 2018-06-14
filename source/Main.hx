@@ -1,8 +1,8 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxGame;
 import openfl.display.Sprite;
+//import flixel.FlxG;
 
 class Main extends Sprite
 {
@@ -10,7 +10,7 @@ class Main extends Sprite
 	{
 		super();
 		//addChild(new FlxGame(800, 600, MenuState));
-		addChild(new FlxGame(800, 600, PlayState));
+		addChild(new FlxGame(0, 0, PlayState));
 		
 		// debug
 		//FlxG.debugger.visible = true;

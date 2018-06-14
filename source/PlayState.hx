@@ -16,23 +16,18 @@ class PlayState extends FlxState
 	public var player:Player;
 	
 	public var level:TiledLevel;
-	public var score:FlxText;
-	public var status:FlxText;
 	public var coins:FlxGroup;
 	public var floor:FlxObject;
 	public var exit:FlxSprite;
-	
-	// Debug
-	public var player_acceleration:FlxText;
-	public var player_velocity:FlxText;
-	
+	public var cameraGame:FlxCamera;
+	public var cameraUI:FlxCamera;
 	
 	override public function create () : Void 
 	{
-        FlxG.camera.bgColor = FlxColor.WHITE;
 		player = new Player(0, 0);
         add(player);
-		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER, 2);			
+		//FlxG.camera.bgColor = FlxColor.WHITE;
+		//FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER, 2);			
 		
 		coins = new FlxGroup();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
@@ -47,16 +42,20 @@ class PlayState extends FlxState
 		// Add foreground tiles after adding level objects, so these tiles render on top of player
 		add(level.foregroundTiles);
 		
-		
-		player_acceleration = new FlxText(500);
-		player_acceleration.setFormat("assets/fonts/monofonto.ttf", 20, FlxColor.BLACK, FlxTextAlign.CENTER);
-		player_acceleration.antialiasing = true;
-		add(player_acceleration);
-		
-		player_velocity = new FlxText(700);
-		player_velocity.setFormat("assets/fonts/monofonto.ttf", 20, FlxColor.BLACK, FlxTextAlign.CENTER);
-		player_velocity.antialiasing = true;
-		add(player_velocity);
+		// Level camera
+		cameraGame = new FlxCamera();
+		FlxG.cameras.reset(cameraGame);
+		FlxCamera.defaultCameras = [cameraGame];
+		cameraGame.bgColor = FlxColor.WHITE;
+		cameraGame.follow(player, FlxCameraFollowStyle.PLATFORMER, 2);
+		// UI camera
+		cameraUI = new FlxCamera();
+		FlxG.cameras.add(cameraUI);
+		cameraUI.bgColor = FlxColor.TRANSPARENT;
+		// UI class		
+		var ui = new UI(0, 0);
+		ui.camera = cameraUI;		
+		add(ui);
 		
 		super.create();
 	}
@@ -70,11 +69,5 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		level.collideWithLevel(player);
-		
-		
-		player_acceleration.text = "Acceleration: " + player.acceleration.x;
-		player_acceleration.x = player.x - 100;
-		player_velocity.text = "Velocity: " + player.velocity.x;
-		player_velocity.x = player.x + 100;
 	}
 }
