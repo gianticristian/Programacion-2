@@ -7,10 +7,10 @@ import flixel.FlxObject;
 class Player extends FlxSprite
 {
 	//Movement
-    private var speed : Float = 250;
-	private var rotationSpeed = 2;
-    private var jumpSpeed : Float = 1500;
-    private var gravity : Float = 1000;
+    private var speed : Float = 350;
+	private var rotationSpeed = 3;
+    private var jumpSpeed : Float = 2500;
+    private var gravity : Float = 1500;
 	//Input
     private var left : Bool;
     private var right : Bool;
@@ -27,11 +27,12 @@ class Player extends FlxSprite
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Walk", [12, 13, 14], 10);
-		//animation.add("Jump", [],);
+		animation.add("GoinUp", [18], 1, true);
+		animation.add("GoinDown", [19], 1, true);
 		animation.add("Hurt", [6]);
 		
-		maxVelocity.x = 350;
-		maxVelocity.y = 450;
+		maxVelocity.x = 550;
+		maxVelocity.y = 550;
 		drag.set(1000, 1000);
 		acceleration.y = gravity;
 	}
@@ -39,7 +40,8 @@ class Player extends FlxSprite
 	override public function update (elapsed : Float)
     { 
 		Input();
-		Movement();     
+		Movement();  
+		InAir();
 		super.update(elapsed);
     }
 	
@@ -47,7 +49,7 @@ class Player extends FlxSprite
     {
         left = FlxG.keys.anyPressed([LEFT, A]);
         right = FlxG.keys.anyPressed([RIGHT, D]);
-        jump = FlxG.keys.anyJustPressed([SPACE]);    
+        jump = FlxG.keys.anyJustPressed([SPACE, L]);    
         if (left && right)
 			left = right = false;
     }
@@ -91,7 +93,15 @@ class Player extends FlxSprite
 	
 	private function Jump()
 	{
-		velocity.y -= jumpSpeed;	
+		velocity.y -= jumpSpeed;
+	}
+	
+	private function InAir()
+	{
+		if (velocity.y < 0 )
+			animation.play("GoinUp");
+		if (velocity.y > 0 )
+			animation.play("GoinDown");
 	}
 	
 	private function Hurt()
