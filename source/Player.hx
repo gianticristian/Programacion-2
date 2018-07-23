@@ -7,12 +7,12 @@ import flixel.addons.util.FlxFSM;
 
 class Player extends FlxSprite
 {
-	public static inline var gravity:Float = 1000;
-    public static inline var speed : Float = 350;
-	public static inline var maxSpeed : Float = 600;
-	public static inline var rotationSpeed = 3;
-    public static inline var jumpSpeed : Float = 400;
-
+	public static inline var gravity : Int = 1000;
+    public static inline var speed : Int = 350;
+	public static inline var maxSpeed : Int = 600;
+	public static inline var deceleration : Float = 0.9;
+	public static inline var rotationSpeed : Int = 3;
+    public static inline var jumpSpeed : Int = 400;
 	private var fsm:FlxFSM<FlxSprite>;
 	
 	
@@ -30,21 +30,20 @@ class Player extends FlxSprite
 		animation.add("Walk", [12, 13, 14], 10);
 		animation.add("GoinUp", [18], 0);
 		animation.add("GoinDown", [19], 0);
-		animation.add("Punch", [24, 25, 26, 27, 28], 10, false);
+		animation.add("Punch", [27, 26, 25, 24, 28], 10, false);
 		
 		fsm = new FlxFSM<FlxSprite>(this);
 		
 		fsm.transitions
 			.add(Idle, Jump, Conditions.jump)
 			.add(Jump, Idle, Conditions.grounded)
+			.add(Idle, Punch, Conditions.punch)
+			.add(Punch, Idle, Conditions.animationFinished)
 			.add(Jump, GroundPound, Conditions.groundSlam)
 			.add(GroundPound, GroundPoundFinish, Conditions.grounded)
 			.add(GroundPoundFinish, Idle, Conditions.animationFinished)
 			.start(Idle);
 		
-		//maxVelocity.x = 550;
-		//maxVelocity.y = 550;
-		//drag.set(1000, 1000);
 		acceleration.y = gravity;
 		maxVelocity.set(maxSpeed, gravity);
 	}
@@ -68,6 +67,11 @@ class Conditions
 		return Owner.isTouching(FlxObject.DOWN);
 	}
 	
+	public static function punch(Owner:FlxSprite):Bool
+	{
+		return FlxG.keys.anyJustPressed([K]) && Owner.isTouching(FlxObject.DOWN);
+	}
+	
 	public static function groundSlam(Owner:FlxSprite):Bool
 	{
 		return FlxG.keys.anyJustPressed([DOWN, S]) && !Owner.isTouching(FlxObject.DOWN);
@@ -81,6 +85,9 @@ class Conditions
 	
 class Idle extends FlxFSMState<FlxSprite>
 {
+	private var pressedLeft:Bool = false;
+	private var pressedRight:Bool = false;
+	
 	override public function enter(owner:FlxSprite, fsm:FlxFSM<FlxSprite>):Void 
 	{
 		owner.animation.play("Idle");
@@ -89,38 +96,73 @@ class Idle extends FlxFSMState<FlxSprite>
 	override public function update(elapsed:Float, owner:FlxSprite, fsm:FlxFSM<FlxSprite>):Void 
 	{
 		owner.acceleration.x = 0;
+		input();
 		
-		if (FlxG.keys.anyPressed([LEFT, A]) || FlxG.keys.anyPressed([RIGHT, D]))
-			moving(owner);
+		if (pressedLeft || pressedRight)
+		{
+			moving(owner);	
+			owner.animation.play("Walk");
+		}
 		else
+		{
 			decelerate(owner);
+			owner.animation.play("Idle");
+		}		
+	}
+	
+	private function input()
+	{
+		pressedLeft = FlxG.keys.anyPressed([LEFT, A]);
+		pressedRight = FlxG.keys.anyPressed([RIGHT, D]);
 	}
 	
 	private function moving(owner:FlxSprite)
 	{
-		if (FlxG.keys.anyPressed([LEFT, A]) && FlxG.keys.anyPressed([RIGHT, D]))
+		if (pressedLeft && pressedRight)
 		{
 			decelerate(owner);
 			return;
 		}
 		else
 		{
-			owner.facing = FlxG.keys.anyPressed([LEFT, A]) ? FlxObject.LEFT : FlxObject.RIGHT;
-			owner.animation.play("Walk");
-			owner.acceleration.x = FlxG.keys.anyPressed([LEFT, A]) ? -Player.speed : Player.speed;
+			if (pressedLeft && owner.facing == FlxObject.RIGHT)
+			{
+				turn(owner);
+				owner.facing = FlxObject.LEFT;
+			}
+			if (pressedRight && owner.facing == FlxObject.LEFT)
+			{
+				turn(owner);
+				owner.facing = FlxObject.RIGHT;
+			}
+			accelerate(owner);
 		}
+	}
+	
+	private function accelerate(owner:FlxSprite)
+	{
+		if (owner.facing == FlxObject.LEFT)
+			owner.acceleration.x -= Player.speed;
+		else
+			owner.acceleration.x += Player.speed;
 	}
 	
 	private function decelerate(owner:FlxSprite)
 	{
-		owner.animation.play("Idle");
-		owner.velocity.x *= 0.9;
+		owner.velocity.x *= Player.deceleration;
 	}
 	
+	private function turn(owner:FlxSprite)
+	{
+		owner.velocity.x /= Player.rotationSpeed;
+	}
 }
 
 class Jump extends FlxFSMState<FlxSprite>
 {
+	private var pressedLeft:Bool = false;
+	private var pressedRight:Bool = false;
+	
 	override public function enter(owner:FlxSprite, fsm:FlxFSM<FlxSprite>):Void 
 	{
 		owner.animation.play("GoinUp");
@@ -130,10 +172,67 @@ class Jump extends FlxFSMState<FlxSprite>
 	override public function update(elapsed:Float, owner:FlxSprite, fsm:FlxFSM<FlxSprite>):Void 
 	{
 		owner.acceleration.x = 0;
-		if (FlxG.keys.anyPressed([LEFT, A]) || FlxG.keys.anyPressed([RIGHT, D]))	
+		input();
+		
+		if (pressedLeft || pressedRight)	
+			moving(owner);	
+	}
+	
+	private function input()
+	{
+		pressedLeft = FlxG.keys.anyPressed([LEFT, A]);
+		pressedRight = FlxG.keys.anyPressed([RIGHT, D]);
+	}
+	
+	private function moving(owner:FlxSprite)
+	{
+		if (pressedLeft && pressedRight)
 		{
-			owner.acceleration.x = FlxG.keys.anyPressed([LEFT, A]) ? -300 : 300;
+			decelerate(owner);
+			return;
 		}
+		else
+		{
+			if (pressedLeft && owner.facing == FlxObject.RIGHT)
+			{
+				turn(owner);
+				owner.facing = FlxObject.LEFT;
+			}
+			if (pressedRight && owner.facing == FlxObject.LEFT)
+			{
+				turn(owner);
+				owner.facing = FlxObject.RIGHT;
+			}
+			accelerate(owner);
+		}
+	}
+	
+	private function accelerate(owner:FlxSprite)
+	{
+		if (owner.facing == FlxObject.LEFT)
+			owner.acceleration.x -= Player.speed;
+		else
+			owner.acceleration.x += Player.speed;
+	}
+	
+	private function decelerate(owner:FlxSprite)
+	{
+		owner.velocity.x *= Player.deceleration;
+	}
+	
+	private function turn(owner:FlxSprite)
+	{
+		owner.velocity.x /= Player.rotationSpeed;
+	}
+}
+
+class Punch extends FlxFSMState<FlxSprite>
+{
+	override public function enter(owner:FlxSprite, fsm:FlxFSM<FlxSprite>):Void 
+	{
+		owner.animation.play("Punch");
+		owner.velocity.x = 0;
+		owner.acceleration.x = 0;
 	}
 }
 
