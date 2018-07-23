@@ -91,20 +91,32 @@ class Idle extends FlxFSMState<FlxSprite>
 		owner.acceleration.x = 0;
 		
 		if (FlxG.keys.anyPressed([LEFT, A]) || FlxG.keys.anyPressed([RIGHT, D]))
+			moving(owner);
+		else
+			decelerate(owner);
+	}
+	
+	private function moving(owner:FlxSprite)
+	{
+		if (FlxG.keys.anyPressed([LEFT, A]) && FlxG.keys.anyPressed([RIGHT, D]))
 		{
-			if (FlxG.keys.anyPressed([LEFT, A]) && FlxG.keys.anyPressed([RIGHT, D]))
-				return;
-			
-			owner.facing = FlxG.keys.anyPressed([LEFT, A]) ? FlxObject.LEFT : FlxObject.RIGHT;
-			owner.animation.play("Walk");
-			owner.acceleration.x = FlxG.keys.anyPressed([LEFT, A]) ? -300 : 300;
+			decelerate(owner);
+			return;
 		}
 		else
 		{
-			owner.animation.play("Idle");
-			owner.velocity.x *= 0.9;
+			owner.facing = FlxG.keys.anyPressed([LEFT, A]) ? FlxObject.LEFT : FlxObject.RIGHT;
+			owner.animation.play("Walk");
+			owner.acceleration.x = FlxG.keys.anyPressed([LEFT, A]) ? -Player.speed : Player.speed;
 		}
 	}
+	
+	private function decelerate(owner:FlxSprite)
+	{
+		owner.animation.play("Idle");
+		owner.velocity.x *= 0.9;
+	}
+	
 }
 
 class Jump extends FlxFSMState<FlxSprite>
