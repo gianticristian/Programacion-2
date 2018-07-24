@@ -12,10 +12,14 @@ class Player extends FlxSprite
     public var speed : Int = 350;
 	public var maxSpeed : Int = 600;
 	public var deceleration : Float = 0.9;
+	public var attackDeceleration : Float = 0.1;
+	public var attackAcceleration : Float = 1.1;
 	public var rotationSpeed : Int = 3;
     public var jumpSpeed : Int = 400;
-	private var pressedLeft : Bool = false;
-	private var pressedRight : Bool = false;
+	public var pressedLeft : Bool = false;
+	public var pressedRight : Bool = false;
+	public var pressedJump : Bool = false;
+	public var pressedAttack : Bool = false;
 
 	private var fsm:FlxFSM<Player>;
 	
@@ -35,14 +39,17 @@ class Player extends FlxSprite
 		animation.add("GoinUp", [18], 0);
 		animation.add("GoinDown", [19], 0);
 		animation.add("Punch", [27, 26, 25, 24, 28], 10, false);
+		animation.add("Kick", [32, 31, 30], 10, false);
 		
 		fsm = new FlxFSM<Player>(this);
 	
 		fsm.transitions
 			.add(Idle, Jump, Conditions.jump)
 			.add(Jump, Idle, Conditions.grounded)
-			.add(Idle, Punch, Conditions.punch)
-			.add(Punch, Idle, Conditions.animationFinished)
+			.add(Jump, Attack, Conditions.attack)
+			.add(Idle, Attack, Conditions.attack)
+			.add(Attack, Idle, Conditions.animationFinished)
+			.add(Attack, Jump, Conditions.animationFinished)
 			.add(Jump, GroundPound, Conditions.groundSlam)
 			.add(GroundPound, GroundPoundFinish, Conditions.grounded)
 			.add(GroundPoundFinish, Idle, Conditions.animationFinished)
@@ -65,9 +72,12 @@ class Player extends FlxSprite
 		
 		if (pressedLeft && pressedRight)
 			pressedLeft = pressedRight = null;
+		
+		pressedJump = FlxG.keys.anyJustPressed([SPACE, W]);
+		pressedAttack = FlxG.keys.anyJustPressed([K]);
 	}
 	
-	public function movementGround()
+	public function movement()
 	{
 		if (isMoving())
 		{
@@ -105,9 +115,24 @@ class Player extends FlxSprite
 			acceleration.x += speed;
 	}
 	
-	private function decelerate()
+	public function decelerate()
 	{
 		velocity.x *= deceleration;
+	}
+	
+	public function attack()
+	{
+		trace(isTouching(FlxObject.DOWN));
+		if (isTouching(FlxObject.DOWN))
+		{
+			animation.play("Punch");
+			acceleration.x = 0;
+			velocity.x *= attackDeceleration;
+		}
+		else
+		{
+			animation.play("Kick");
+		}
 	}
 	
 	private function turn()
@@ -118,29 +143,29 @@ class Player extends FlxSprite
 
 class Conditions
 {
-	public static function jump(Owner:FlxSprite):Bool
+	public static function jump(owner:Player):Bool
 	{
-		return FlxG.keys.anyJustPressed([SPACE, W]) && Owner.isTouching(FlxObject.DOWN);
+		return owner.pressedJump && owner.isTouching(FlxObject.DOWN);
 	}
 	
-	public static function grounded(Owner:FlxSprite):Bool
+	public static function grounded(owner:Player):Bool
 	{
-		return Owner.isTouching(FlxObject.DOWN);
+		return owner.isTouching(FlxObject.DOWN);
 	}
 	
-	public static function punch(Owner:FlxSprite):Bool
+	public static function attack(owner:Player):Bool
 	{
-		return FlxG.keys.anyJustPressed([K]) && Owner.isTouching(FlxObject.DOWN);
+		return owner.pressedAttack;
 	}
 	
-	public static function groundSlam(Owner:FlxSprite):Bool
+	public static function groundSlam(owner:Player):Bool
 	{
-		return FlxG.keys.anyJustPressed([DOWN, S]) && !Owner.isTouching(FlxObject.DOWN);
+		return FlxG.keys.anyJustPressed([DOWN, S]) && !owner.isTouching(FlxObject.DOWN);
 	}
 	
-	public static function animationFinished(Owner:FlxSprite):Bool
+	public static function animationFinished(owner:Player):Bool
 	{
-		return Owner.animation.finished;
+		return owner.animation.finished;
 	}
 }	
 	
@@ -155,7 +180,7 @@ class Idle extends FlxFSMState<Player>
 	{
 		owner.acceleration.x = 0;
 		owner.input();
-		owner.movementGround();
+		owner.movement();
 		if (owner.isMoving())
 			owner.animation.play("Walk");
 		else
@@ -175,20 +200,18 @@ class Jump extends FlxFSMState<Player>
 	{
 		owner.acceleration.x = 0;
 		owner.input();
-		owner.movementGround();
+		owner.movement();
 		
 		if (owner.isFalling())
 			owner.animation.play("GoinDown");
 	}
 }
 
-class Punch extends FlxFSMState<Player>
+class Attack extends FlxFSMState<Player>
 {
 	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void 
 	{
-		owner.animation.play("Punch");
-		owner.velocity.x = 0;
-		owner.acceleration.x = 0;
+		owner.attack();		
 	}
 }
 
