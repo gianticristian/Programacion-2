@@ -2,8 +2,8 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
-//import flixel.addons.display.FlxExtendedSprite.MouseCallback;
 import flixel.addons.util.FlxFSM;
+import flixel.group.FlxGroup.FlxTypedGroup;
 
 
 class Player extends FlxSprite
@@ -20,13 +20,16 @@ class Player extends FlxSprite
 	public var pressedRight : Bool = false;
 	public var pressedJump : Bool = false;
 	public var pressedAttack : Bool = false;
-
-	private var fsm:FlxFSM<Player>;
+	public var attackPoint : Float = 0;
+	
+	private var punchs : FlxTypedGroup<Punch>;
+	private var fsm : FlxFSM<Player>;
 	
 	
-	public function new (?X : Float = 0, ?Y : Float = 0)
+	public function new (?X : Float = 0, ?Y : Float = 0, poolPunch : FlxTypedGroup<Punch>)
 	{
 		super(X, Y);
+		punchs = poolPunch;
 		loadGraphic("assets/images/player.png", true, 16, 16); 
 		scale.set(3, 3);
 		updateHitbox();
@@ -40,7 +43,7 @@ class Player extends FlxSprite
 		animation.add("GoinDown", [19], 0);
 		animation.add("Punch", [27, 26, 25, 24, 28], 10, false);
 		animation.add("Kick", [32, 31, 30], 10, false);
-		
+			
 		fsm = new FlxFSM<Player>(this);
 	
 		fsm.transitions
@@ -57,6 +60,7 @@ class Player extends FlxSprite
 		
 		acceleration.y = gravity;
 		maxVelocity.set(maxSpeed, gravity);
+		attackPoint += width; 
 	}
 	
 	override public function update (elapsed : Float)
@@ -64,7 +68,7 @@ class Player extends FlxSprite
 		fsm.update(elapsed);
 		super.update(elapsed);
     }
-	
+		
 	public function input()
 	{
 		pressedLeft = FlxG.keys.anyPressed([LEFT, A]);
@@ -85,11 +89,13 @@ class Player extends FlxSprite
 			{
 				turn();
 				facing = FlxObject.LEFT;
+				attackPoint *= -1;
 			}
 			if (pressedRight && facing == FlxObject.LEFT)
 			{
 				turn();
 				facing = FlxObject.RIGHT;
+
 			}
 			accelerate();
 		}
@@ -122,12 +128,14 @@ class Player extends FlxSprite
 	
 	public function attack()
 	{
-		trace(isTouching(FlxObject.DOWN));
 		if (isTouching(FlxObject.DOWN))
 		{
 			animation.play("Punch");
 			acceleration.x = 0;
 			velocity.x *= attackDeceleration;
+			var punch = punchs.recycle(Punch);
+			punch.reset(x, y);
+			punch.setDirection(facing);			
 		}
 		else
 		{

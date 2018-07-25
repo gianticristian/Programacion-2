@@ -6,7 +6,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup;
-import flixel.text.FlxText;
+//import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import Player;
 
@@ -14,6 +14,8 @@ import Player;
 class PlayState extends FlxState
 {
 	public var player:Player;
+	public var poolPunch : FlxTypedGroup<Punch>;
+	public var poolPunchSize : Int = 20;
 	
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
@@ -24,10 +26,10 @@ class PlayState extends FlxState
 	
 	override public function create () : Void 
 	{
-		player = new Player(0, 0);
-        add(player);
-		//FlxG.camera.bgColor = FlxColor.WHITE;
-		//FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER, 2);			
+		createPool();
+		
+		player = new Player(0, 0, poolPunch);
+        add(player);		
 		
 		coins = new FlxGroup();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
@@ -69,5 +71,19 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		level.collideWithLevel(player);
+	}
+	
+	
+	private function createPool()
+	{
+		poolPunch = new FlxTypedGroup<Punch>(poolPunchSize);
+		
+		for (i in 0...poolPunchSize) 
+		{
+			var punch = new Punch();
+			punch.kill();
+			poolPunch.add(punch);
+		}
+		add(poolPunch);
 	}
 }
