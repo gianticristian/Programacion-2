@@ -14,8 +14,13 @@ import Player;
 class PlayState extends FlxState
 {
 	public var player:Player;
+	// Punch pool objects
 	public var poolPunch : FlxTypedGroup<Punch>;
 	public var poolPunchSize : Int = 20;
+	// Kick pool objects
+	public var poolKick : FlxTypedGroup<Kick>;
+	public var poolKickSize : Int = 10;
+	
 	
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
@@ -28,7 +33,7 @@ class PlayState extends FlxState
 	{
 		createPool();
 		
-		player = new Player(0, 0, poolPunch);
+		player = new Player(0, 0, poolPunch, poolKick);
         add(player);		
 		
 		coins = new FlxGroup();
@@ -77,7 +82,6 @@ class PlayState extends FlxState
 	private function createPool()
 	{
 		poolPunch = new FlxTypedGroup<Punch>(poolPunchSize);
-		
 		for (i in 0...poolPunchSize) 
 		{
 			var punch = new Punch();
@@ -85,5 +89,14 @@ class PlayState extends FlxState
 			poolPunch.add(punch);
 		}
 		add(poolPunch);
+		
+		poolKick = new FlxTypedGroup<Kick>(poolKickSize);
+		for (i in 0...poolKickSize) 
+		{
+			var kick = new Kick();
+			kick.kill();
+			poolKick.add(kick);
+		}
+		add(poolKick);
 	}
 }

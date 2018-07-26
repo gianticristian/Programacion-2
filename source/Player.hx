@@ -23,13 +23,15 @@ class Player extends FlxSprite
 	public var attackPoint : Float = 0;
 	
 	private var punchs : FlxTypedGroup<Punch>;
+	private var kicks : FlxTypedGroup<Kick>;
 	private var fsm : FlxFSM<Player>;
 	
 	
-	public function new (?X : Float = 0, ?Y : Float = 0, poolPunch : FlxTypedGroup<Punch>)
+	public function new (?X : Float = 0, ?Y : Float = 0, poolPunch : FlxTypedGroup<Punch>, poolKick : FlxTypedGroup<Kick>)
 	{
 		super(X, Y);
 		punchs = poolPunch;
+		kicks = poolKick;
 		loadGraphic("assets/images/player.png", true, 16, 16); 
 		scale.set(3, 3);
 		updateHitbox();
@@ -140,6 +142,9 @@ class Player extends FlxSprite
 		else
 		{
 			animation.play("Kick");
+			var kick = kicks.recycle(Kick);
+			kick.reset(x, y);
+			kick.setDirection(facing);	
 		}
 	}
 	
