@@ -32,19 +32,21 @@ class Player extends FlxSprite
 		super(X, Y);
 		punchs = poolPunch;
 		kicks = poolKick;
-		loadGraphic("assets/images/player.png", true, 16, 16); 
+		loadGraphic("assets/images/Player.png", true, 16, 16); 
 		scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
-		animation.add("Hurt", [6]);
-		animation.add("Walk", [12, 13, 14], 10);
-		animation.add("GoinUp", [18], 0);
-		animation.add("GoinDown", [19], 0);
-		animation.add("Punch", [27, 26, 25, 24, 28], 10, false);
-		animation.add("Kick", [32, 31, 30], 10, false);
+		animation.add("Hurt", [4]);
+		animation.add("Walk", [6, 7, 8, 9, 10, 11], 10);
+		animation.add("GoinUp", [12], 0);
+		animation.add("GoinDown", [13], 0);
+		animation.add("Landing", [16], 0);
+		animation.add("Kick", [15], 2, false);
+		animation.add("Punch", [22, 23, 24], 8, false);
+		animation.add("Scale", [25, 26, 27]);
 			
 		fsm = new FlxFSM<Player>(this);
 	
@@ -217,6 +219,11 @@ class Jump extends FlxFSMState<Player>
 		
 		if (owner.isFalling())
 			owner.animation.play("GoinDown");
+	}
+	
+	override public function exit(owner:Player):Void
+	{
+		owner.animation.play("Landing");
 	}
 }
 
