@@ -9,8 +9,8 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 class Player extends FlxSprite
 {
 	public var gravity : Int = 1000;
-    public var speed : Int = 350;
-	public var maxSpeed : Int = 600;
+    public var speed : Int = 400;
+	public var maxSpeed : Int = 500;
 	public var deceleration : Float = 0.9;
 	public var attackDeceleration : Float = 0.1;
 	public var attackAcceleration : Float = 1.1;
@@ -44,8 +44,8 @@ class Player extends FlxSprite
 		animation.add("GoinUp", [12], 0);
 		animation.add("GoinDown", [13], 0);
 		animation.add("Landing", [16], 0);
-		animation.add("Kick", [15], 2, false);
-		animation.add("Punch", [22, 23, 24], 8, false);
+		animation.add("Kick", [15], 6, false);
+		animation.add("Punch", [22, 23, 24], 12, false);
 		animation.add("Scale", [25, 26, 27]);
 			
 		fsm = new FlxFSM<Player>(this);

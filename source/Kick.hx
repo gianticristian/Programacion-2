@@ -11,13 +11,13 @@ class Kick extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
-		loadGraphic("assets/images/player.png", true, 16, 16);
+		loadGraphic("assets/images/Kick.png", true, 16, 16);
 		scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		animation.add("Move", [33], 0, false);
-		animation.play("Move");
+		//animation.add("Move", [33], 0, false);
+		//animation.play("Move");
 		velocity.x = speed;
 		maxVelocity.set(speed, 0);
 	}
