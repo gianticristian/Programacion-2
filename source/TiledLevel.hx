@@ -98,8 +98,7 @@ class TiledLevel extends TiledMap
 							getAnimatedTile(specialTiles[tile.tileID], tileset)
 						else null
 				]);
-			}
-			
+			}		
 			
 			if (tileLayer.properties.contains("nocollide"))
 			{
@@ -147,6 +146,15 @@ class TiledLevel extends TiledMap
 			
 			//objects layer
 			if (layer.name == "objects")
+			{
+				for (o in objectLayer.objects)
+				{
+					loadObject(state, o, objectLayer, objectsLayer);
+				}
+			}
+			
+			// Coins layer
+			if (layer.name == "Coins")
 			{
 				for (o in objectLayer.objects)
 				{
@@ -223,10 +231,8 @@ class TiledLevel extends TiledMap
 				state.floor = floor;
 				
 			case "coin":
-				var tileset = g.map.getGidOwner(o.gid);
-				var coin = new FlxSprite(x, y, c_PATH_LEVEL_TILESHEETS + tileset.imageSource);
+				var coin = new Coin(x, y);				
 				state.coins.add(coin);
-				
 			case "exit":
 				// Create the level exit
 				var exit = new FlxSprite(x, y);

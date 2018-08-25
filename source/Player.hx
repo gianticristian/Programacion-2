@@ -79,7 +79,8 @@ class Player extends FlxSprite
 		pressedRight = FlxG.keys.anyPressed([RIGHT, D]);
 		
 		if (pressedLeft && pressedRight)
-			pressedLeft = pressedRight = null;
+			//pressedLeft = pressedRight = null;
+			pressedLeft = pressedRight = false;
 		
 		pressedJump = FlxG.keys.anyJustPressed([SPACE, W]);
 		pressedAttack = FlxG.keys.anyJustPressed([K]);

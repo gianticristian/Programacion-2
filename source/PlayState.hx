@@ -39,7 +39,7 @@ class PlayState extends FlxState
 		coins = new FlxGroup();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
 		// Add backgrounds
-		add(level.backgroundLayer);
+		//add(level.backgroundLayer);
 		// Draw coins first
 		add(coins);
 		// Add static images
@@ -48,6 +48,8 @@ class PlayState extends FlxState
 		add(level.objectsLayer);
 		// Add foreground tiles after adding level objects, so these tiles render on top of player
 		add(level.foregroundTiles);
+		
+			
 		
 		// Level camera
 		cameraGame = new FlxCamera();
