@@ -21,6 +21,7 @@ class Player extends FlxSprite
 	public var pressedJump : Bool = false;
 	public var pressedAttack : Bool = false;
 	public var attackPoint : Float = 0;
+	public var money : Int = 0;
 	
 	private var punchs : FlxTypedGroup<Punch>;
 	private var kicks : FlxTypedGroup<Kick>;

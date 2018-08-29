@@ -13,6 +13,7 @@ import Player;
 
 class PlayState extends FlxState
 {
+	private var ui : UI;
 	public var player:Player;
 	// Punch pool objects
 	public var poolPunch : FlxTypedGroup<Punch>;
@@ -31,6 +32,7 @@ class PlayState extends FlxState
 	
 	override public function create () : Void 
 	{
+		//FlxG.mouse.visible = false;
 		createPool();
 		
 		player = new Player(0, 0, poolPunch, poolKick);
@@ -40,7 +42,6 @@ class PlayState extends FlxState
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
 		// Add backgrounds
 		//add(level.backgroundLayer);
-		// Draw coins first
 		add(coins);
 		// Add static images
 		add(level.imagesLayer);
@@ -62,7 +63,7 @@ class PlayState extends FlxState
 		FlxG.cameras.add(cameraUI);
 		cameraUI.bgColor = FlxColor.TRANSPARENT;
 		// UI class		
-		var ui = new UI(0, 0);
+		ui = new UI(0, 0);
 		ui.camera = cameraUI;		
 		add(ui);
 		
@@ -78,6 +79,13 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		level.collideWithLevel(player);
+		FlxG.overlap(player, coins, playerTouchCoin);
+	}
+	
+	private function playerTouchCoin (_player : Player, _coin : Coin) : Void
+	{
+		_player.money += _coin.value;
+		_coin.picked();
 	}
 	
 	
