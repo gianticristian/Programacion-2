@@ -161,6 +161,15 @@ class TiledLevel extends TiledMap
 					loadObject(state, o, objectLayer, objectsLayer);
 				}
 			}
+			
+			// Enemies layer
+			if (layer.name == "Enemies")
+			{
+				for (o in objectLayer.objects)
+				{
+					loadObject(state, o, objectLayer, objectsLayer);
+				}
+			}
 		}
 	}
 	
@@ -228,11 +237,13 @@ class TiledLevel extends TiledMap
 				
 			case "floor":
 				var floor = new FlxObject(x, y, o.width, o.height);
-				state.floor = floor;
-				
+				state.floor = floor;	
 			case "coin":
 				var coin = new Coin(x, y);				
 				state.coins.add(coin);
+			case "enemies":
+				var enemy = new EnemyBlue(x, y);				
+				state.enemies.add(enemy);
 			case "exit":
 				// Create the level exit
 				var exit = new FlxSprite(x, y);

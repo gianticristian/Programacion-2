@@ -25,6 +25,7 @@ class PlayState extends FlxState
 	
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
+	public var enemies:FlxGroup;
 	public var floor:FlxObject;
 	public var exit:FlxSprite;
 	public var cameraGame:FlxCamera;
@@ -39,6 +40,7 @@ class PlayState extends FlxState
         add(player);		
 		
 		coins = new FlxGroup();
+		enemies = new FlxGroup();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
 		// Add backgrounds
 		//add(level.backgroundLayer);
@@ -49,8 +51,9 @@ class PlayState extends FlxState
 		add(level.objectsLayer);
 		// Add foreground tiles after adding level objects, so these tiles render on top of player
 		add(level.foregroundTiles);
+		// Add enemies
+		add(enemies);
 		
-			
 		
 		// Level camera
 		cameraGame = new FlxCamera();
