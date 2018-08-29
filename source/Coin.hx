@@ -26,10 +26,11 @@ class Coin extends FlxSprite
 	
 	public function picked ()
 	{
+		alive = false;
 		FlxTween.tween
 		(
 			this, 
-			{ y: this.y - 50 }, 
+			{ x: this.x, y: this.y - 50 }, 
 			0.5,
 			{
 				ease: FlxEase.quadOut,

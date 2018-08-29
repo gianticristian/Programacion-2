@@ -7,8 +7,6 @@ import flixel.util.FlxColor;
 class UI extends FlxSpriteGroup 
 {
 	private var moneyText : FlxText;
-	private var moneyValue : Int = 0;
-	
 	private var healthText : FlxText;
 	
 	
@@ -32,14 +30,8 @@ class UI extends FlxSpriteGroup
 		healthText.text = "Health: " + value;
 	}
 	
-	public function addMoney(value : Int)
+	public function updateMoney(value : Int)
 	{
-		moneyValue += value;
-		moneyText.text = "Money: " + moneyValue;
-	}
-	
-	public function updateMoney(player : Player)
-	{
-		moneyText.text = "Money: " + player.money;
+		moneyText.text = "Money: " + value;
 	}
 }

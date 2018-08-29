@@ -66,6 +66,7 @@ class PlayState extends FlxState
 		ui = new UI(0, 0);
 		ui.camera = cameraUI;		
 		add(ui);
+		ui.updateMoney(player.money);
 		
 		super.create();
 	}
@@ -84,8 +85,12 @@ class PlayState extends FlxState
 	
 	private function playerTouchCoin (_player : Player, _coin : Coin) : Void
 	{
-		_player.money += _coin.value;
-		_coin.picked();
+		if (_player.alive && _coin.alive)
+		{
+			_player.money += _coin.value;
+			ui.updateMoney(_player.money);
+			_coin.picked();		
+		}
 	}
 	
 	
