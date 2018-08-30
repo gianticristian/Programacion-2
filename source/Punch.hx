@@ -13,12 +13,10 @@ class Punch extends FlxSprite
 	{
 		super(X, Y);
 		loadGraphic("assets/images/Punch.png", true, 16, 16);
-		scale.set(3, 3);
+		//scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		//animation.add("Move", [29], 0, false);
-		//animation.play("Move");
 		velocity.x = speed;
 		maxVelocity.set(speed, 0);
 	}

@@ -59,6 +59,7 @@ class PlayState extends FlxState
 		cameraGame = new FlxCamera();
 		FlxG.cameras.reset(cameraGame);
 		FlxCamera.defaultCameras = [cameraGame];
+		cameraGame.zoom = 3;
 		cameraGame.bgColor = FlxColor.WHITE;
 		cameraGame.follow(player, FlxCameraFollowStyle.PLATFORMER, 2);
 		// UI camera
@@ -95,7 +96,6 @@ class PlayState extends FlxState
 			_coin.picked();		
 		}
 	}
-	
 	
 	private function createPool()
 	{

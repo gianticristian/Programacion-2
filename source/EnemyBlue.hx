@@ -9,7 +9,7 @@ class EnemyBlue extends Enemy
 	{
 		super(X, Y);
 		loadGraphic("assets/images/Enemy Blue.png", true, 16, 16);
-		scale.set(3, 3);
+		//scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);

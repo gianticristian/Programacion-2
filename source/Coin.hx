@@ -17,7 +17,7 @@ class Coin extends FlxSprite
 	{
 		super(X, Y);
 		loadGraphic("assets/images/Coins.png", true, 16, 16);
-		scale.set(2, 2);
+		//scale.set(2, 2);
 		updateHitbox();
 		animation.add("Idle", [25, 26, 27, 28, 29], 10);
 		animation.play("Idle");

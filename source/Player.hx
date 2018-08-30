@@ -34,7 +34,7 @@ class Player extends FlxSprite
 		punchs = poolPunch;
 		kicks = poolKick;
 		loadGraphic("assets/images/Player.png", true, 16, 16); 
-		scale.set(3, 3);
+		//scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -80,7 +80,6 @@ class Player extends FlxSprite
 		pressedRight = FlxG.keys.anyPressed([RIGHT, D]);
 		
 		if (pressedLeft && pressedRight)
-			//pressedLeft = pressedRight = null;
 			pressedLeft = pressedRight = false;
 		
 		pressedJump = FlxG.keys.anyJustPressed([SPACE, W]);
