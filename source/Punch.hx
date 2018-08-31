@@ -13,7 +13,6 @@ class Punch extends FlxSprite
 	{
 		super(X, Y);
 		loadGraphic("assets/images/Punch.png", true, 16, 16);
-		//scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);

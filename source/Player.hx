@@ -3,6 +3,7 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.addons.util.FlxFSM;
+import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
 
@@ -23,6 +24,8 @@ class Player extends FlxSprite
 	public var attackPoint : Float = 0;
 	public var money : Int = 0;
 	
+	public var jumpSound : FlxSound;
+	
 	private var punchs : FlxTypedGroup<Punch>;
 	private var kicks : FlxTypedGroup<Kick>;
 	private var fsm : FlxFSM<Player>;
@@ -34,10 +37,12 @@ class Player extends FlxSprite
 		punchs = poolPunch;
 		kicks = poolKick;
 		loadGraphic("assets/images/Player.png", true, 16, 16); 
-		//scale.set(3, 3);
 		updateHitbox();
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
+		
+		jumpSound = FlxG.sound.load("assets/sounds/Jump.wav");
+		
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Hurt", [4]);
@@ -210,6 +215,7 @@ class Jump extends FlxFSMState<Player>
 	{
 		owner.animation.play("GoinUp");
 		owner.velocity.y = -owner.jumpSpeed;
+		owner.jumpSound.play();
 	}
 	
 	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
