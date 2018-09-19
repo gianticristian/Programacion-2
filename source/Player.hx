@@ -9,14 +9,14 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 class Player extends FlxSprite
 {
-	public var gravity : Int = 1000;
-    public var speed : Int = 400;
-	public var maxSpeed : Int = 500;
+	public var gravity : Int = 500;
+    public var speed : Int = 200;
+	public var maxSpeed : Int = 250;
 	public var deceleration : Float = 0.9;
 	public var attackDeceleration : Float = 0.1;
 	public var attackAcceleration : Float = 1.1;
 	public var rotationSpeed : Int = 3;
-    public var jumpSpeed : Int = 400;
+    public var jumpSpeed : Int = 200;
 	public var pressedLeft : Bool = false;
 	public var pressedRight : Bool = false;
 	public var pressedJump : Bool = false;
@@ -42,6 +42,7 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
 		jumpSound = FlxG.sound.load("assets/sounds/Jump.wav");
+		jumpSound.volume = 0.1;
 		
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);

@@ -21,6 +21,7 @@ class Coin extends FlxSprite
 		animation.add("Idle", [25, 26, 27, 28, 29], 10);
 		animation.play("Idle");
 		pickedSound = FlxG.sound.load("assets/sounds/Coin.wav");
+		pickedSound.volume = 0.1;
 	}
 	
 	public function picked ()
