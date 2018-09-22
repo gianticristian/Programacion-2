@@ -6,7 +6,7 @@ import flixel.FlxSprite;
 
 class Punch extends FlxSprite 
 {
-	private var speed : Int = 700;
+	private var speed : Int = 300;
 	
 
 	public function new(?X:Float=0, ?Y:Float=0) 

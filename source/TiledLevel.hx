@@ -153,6 +153,15 @@ class TiledLevel extends TiledMap
 				}
 			}
 			
+			// Player's start layer
+			if (layer.name == "Player")
+			{
+				for (o in objectLayer.objects)
+				{
+					loadObject(state, o, objectLayer, objectsLayer);
+				}
+			}
+			
 			// Coins layer
 			if (layer.name == "Coins")
 			{
@@ -227,17 +236,9 @@ class TiledLevel extends TiledMap
 		
 		switch (o.type.toLowerCase())
 		{
-			case "player_start":
-				var player = new FlxSprite(x, y);
-				player.makeGraphic(32, 32, 0xffaa1111);
-				player.maxVelocity.x = 160;
-				player.maxVelocity.y = 400;
-				player.acceleration.y = 400;
-				player.drag.x = player.maxVelocity.x * 4;
-				FlxG.camera.follow(player);
-				state.player.loadGraphicFromSprite(player);
-				group.add(player);
-				
+			case "player":		
+				var player = new Player(x, y, state.poolPunch, state.poolKick);
+				state.player = player;
 			case "floor":
 				var floor = new FlxObject(x, y, o.width, o.height);
 				state.floor = floor;	

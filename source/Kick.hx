@@ -6,7 +6,7 @@ import flixel.FlxSprite;
 
 class Kick extends FlxSprite 
 {
-	private var speed : Int = 850;
+	private var speed : Int = 350;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{

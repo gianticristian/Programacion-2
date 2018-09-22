@@ -36,14 +36,13 @@ class PlayState extends FlxState
 		//FlxG.mouse.visible = false;
 		createPool();
 		
-		player = new Player(0, 0, poolPunch, poolKick);
-        add(player);		
-		
 		coins = new FlxGroup();
 		enemies = new FlxGroup();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
+		
 		// Add backgrounds
 		//add(level.backgroundLayer);
+
 		add(coins);
 		// Add static images
 		add(level.imagesLayer);
@@ -53,7 +52,7 @@ class PlayState extends FlxState
 		add(level.foregroundTiles);
 		// Add enemies
 		add(enemies);
-		
+		add(player);
 		
 		// Level camera
 		cameraGame = new FlxCamera();
