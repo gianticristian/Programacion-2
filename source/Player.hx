@@ -44,7 +44,6 @@ class Player extends FlxSprite
 		jumpSound = FlxG.sound.load("assets/sounds/Jump.wav");
 		jumpSound.volume = 0.1;
 		
-		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Hurt", [4]);
 		animation.add("Walk", [6, 7, 8, 9, 10, 11], 10);

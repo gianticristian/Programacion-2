@@ -220,7 +220,10 @@ class TiledLevel extends TiledMap
 		
 		// objects in tiled are aligned bottom-left (top-left in flixel)
 		if (o.gid != -1)
-			y -= g.map.getGidOwner(o.gid).tileHeight;
+			// Linea original, de esta forma sube en Y pero queda desfasado
+			//y -= g.map.getGidOwner(o.gid).tileHeight;
+			// Lo subo un nivel mas en Y para que coincida con Tiled
+			y -= g.map.getGidOwner(o.gid).tileHeight * 2;
 		
 		switch (o.type.toLowerCase())
 		{
