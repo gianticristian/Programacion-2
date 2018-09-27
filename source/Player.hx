@@ -23,17 +23,20 @@ class Player extends FlxSprite
 	public var pressedAttack : Bool = false;
 	public var attackPoint : Float = 0;
 	public var money : Int = 0;
+	public var beingHurt : Bool = false;
 	
 	public var jumpSound : FlxSound;
 	
 	private var punchs : FlxTypedGroup<Punch>;
 	private var kicks : FlxTypedGroup<Kick>;
 	private var fsm : FlxFSM<Player>;
+
 	
 	
 	public function new (?X : Float = 0, ?Y : Float = 0, poolPunch : FlxTypedGroup<Punch>, poolKick : FlxTypedGroup<Kick>)
 	{
 		super(X, Y);
+		health = 10;
 		punchs = poolPunch;
 		kicks = poolKick;
 		loadGraphic("assets/images/Player.png", true, 16, 16); 
@@ -45,7 +48,7 @@ class Player extends FlxSprite
 		jumpSound.volume = 0.1;
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
-		animation.add("Hurt", [4]);
+		animation.add("Hurt", [4], 2, false);
 		animation.add("Walk", [6, 7, 8, 9, 10, 11], 10);
 		animation.add("GoinUp", [12], 0);
 		animation.add("GoinDown", [13], 0);
@@ -59,10 +62,19 @@ class Player extends FlxSprite
 		fsm.transitions
 			.add(Idle, Jump, Conditions.jump)
 			.add(Jump, Idle, Conditions.grounded)
-			.add(Jump, Attack, Conditions.attack)
+			
 			.add(Idle, Attack, Conditions.attack)
 			.add(Attack, Idle, Conditions.animationFinished)
+			
+			.add(Jump, Attack, Conditions.attack)
 			.add(Attack, Jump, Conditions.animationFinished)
+			
+			.add(Idle, Hurt, Conditions.hurt)
+			.add(Hurt, Idle, Conditions.animationFinished)
+			
+			.add(Jump, Hurt, Conditions.hurt)
+			.add(Hurt, Jump, Conditions.animationFinished)
+			
 			.add(Jump, GroundPound, Conditions.groundSlam)
 			.add(GroundPound, GroundPoundFinish, Conditions.grounded)
 			.add(GroundPoundFinish, Idle, Conditions.animationFinished)
@@ -160,6 +172,15 @@ class Player extends FlxSprite
 	{
 		velocity.x /= rotationSpeed;
 	}
+	
+	override public function hurt(damage:Float) : Void 
+	{
+		if (beingHurt)
+			return;
+			
+		beingHurt = true;
+		super.hurt(damage);
+	}
 }
 
 class Conditions
@@ -177,6 +198,11 @@ class Conditions
 	public static function attack(owner:Player):Bool
 	{
 		return owner.pressedAttack;
+	}
+	
+	public static function hurt(owner:Player):Bool
+	{
+		return owner.beingHurt;
 	}
 	
 	public static function groundSlam(owner:Player):Bool
@@ -239,6 +265,24 @@ class Attack extends FlxFSMState<Player>
 	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void 
 	{
 		owner.attack();		
+	}
+}
+
+class Hurt extends FlxFSMState<Player>
+{
+	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void 
+	{
+		owner.animation.play("Hurt");
+	}
+	
+	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
+	{
+		owner.decelerate();
+	}
+	
+	override public function exit(owner:Player):Void
+	{
+		owner.beingHurt = false;
 	}
 }
 
