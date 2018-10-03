@@ -70,6 +70,7 @@ class PlayState extends FlxState
 		ui.camera = cameraUI;		
 		add(ui);
 		ui.updateMoney(player.money);
+		ui.updateHealth(player.health);
 		
 		super.create();
 	}
@@ -84,6 +85,7 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		level.collideWithLevel(player);
 		FlxG.overlap(player, coins, playerTouchCoin);
+		FlxG.overlap(player, enemies, playerTouchEnemy);
 	}
 	
 	private function playerTouchCoin (_player : Player, _coin : Coin) : Void
@@ -93,6 +95,16 @@ class PlayState extends FlxState
 			_player.money += _coin.value;
 			ui.updateMoney(_player.money);
 			_coin.picked();		
+		}
+	}
+	
+	public function playerTouchEnemy(_player : Player, _enemy : Enemy) : Void
+	{
+		if (_player.alive && _enemy.alive)
+		{
+			_player.hurt(_enemy.damage);
+			ui.updateHealth(_player.health);
+			_enemy.hurt(1);
 		}
 	}
 	

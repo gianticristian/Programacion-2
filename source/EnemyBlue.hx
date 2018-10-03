@@ -13,10 +13,11 @@ class EnemyBlue extends Enemy
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
+		health = 1;
+		damage = 1;
 		gravity = 1000;
 		speed = 400;
 		maxSpeed = 500;
-		
 	}
 	
 	

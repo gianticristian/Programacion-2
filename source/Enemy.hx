@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 
 class Enemy extends FlxSprite 
 {
+	public var damage : Int;
 	public var gravity : Int;
     public var speed : Int;
 	public var maxSpeed : Int;
@@ -13,9 +14,7 @@ class Enemy extends FlxSprite
 	{
 		super(X, Y);
 		acceleration.y = gravity;
-		maxVelocity.set(maxSpeed, gravity);
-	
-		
+		maxVelocity.set(maxSpeed, gravity);	
 	}
 	
 	public function Hurt(damage : Int)

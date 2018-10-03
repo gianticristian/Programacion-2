@@ -101,6 +101,7 @@ class Player extends FlxSprite
 		
 		pressedJump = FlxG.keys.anyJustPressed([SPACE, W]);
 		pressedAttack = FlxG.keys.anyJustPressed([K]);
+		
 	}
 	
 	public function movement()
