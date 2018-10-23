@@ -1,21 +1,21 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.FlxObject;
 
 
 class Enemy extends FlxSprite 
 {
 	public var damage : Int;
-	public var gravity : Int;
     public var speed : Int;
 	public var maxSpeed : Int;
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
-		acceleration.y = gravity;
-		acceleration.x = speed;
-		maxVelocity.set(maxSpeed, gravity);	
+		facing = FlxObject.LEFT;
+		setFacingFlip(FlxObject.LEFT, false, false);
+		setFacingFlip(FlxObject.RIGHT, true, false);
 	}
 	
 	override public function update (elapsed : Float)
@@ -38,9 +38,6 @@ class Enemy extends FlxSprite
 	
 	private function Walk()
 	{
-		animation.play("Walk");
-		
-		
+		animation.play("Walk");		
 	}
-	
 }
