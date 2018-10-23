@@ -14,8 +14,15 @@ class Enemy extends FlxSprite
 	{
 		super(X, Y);
 		acceleration.y = gravity;
+		acceleration.x = speed;
 		maxVelocity.set(maxSpeed, gravity);	
 	}
+	
+	override public function update (elapsed : Float)
+    {
+		Walk();
+		super.update(elapsed);
+    }
 	
 	public function Hurt(damage : Int)
 	{
@@ -27,6 +34,13 @@ class Enemy extends FlxSprite
 	public function Dead()
 	{
 		trace("I am dead");
+	}
+	
+	private function Walk()
+	{
+		animation.play("Walk");
+		
+		
 	}
 	
 }
