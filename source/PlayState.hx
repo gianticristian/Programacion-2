@@ -25,7 +25,7 @@ class PlayState extends FlxState
 	
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
-	public var enemies:FlxGroup;
+	public var enemies:FlxTypedGroup<Enemy>;
 	public var floor:FlxObject;
 	public var exit:FlxSprite;
 	public var cameraGame:FlxCamera;
@@ -37,7 +37,7 @@ class PlayState extends FlxState
 		createPool();
 		
 		coins = new FlxGroup();
-		enemies = new FlxGroup();
+		enemies = new FlxTypedGroup<Enemy>();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
 		
 		// Add backgrounds
@@ -86,6 +86,16 @@ class PlayState extends FlxState
 		level.collideWithLevel(player);		
 		FlxG.overlap(player, coins, playerTouchCoin);
 		FlxG.overlap(player, enemies, playerTouchEnemy);
+		
+		//FlxG.collide(level, enemies);
+		
+		for (enemy in enemies)
+		{
+			level.collideWithLevel(enemy);
+		}
+			
+			
+		
 	}
 	
 	private function playerTouchCoin (_player : Player, _coin : Coin) : Void

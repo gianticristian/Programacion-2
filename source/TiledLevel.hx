@@ -285,4 +285,6 @@ class TiledLevel extends TiledMap
 		}
 		return false;
 	}
+	
+	
 }

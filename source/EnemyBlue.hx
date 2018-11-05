@@ -13,13 +13,8 @@ class EnemyBlue extends Enemy
 		
 		health = 1;
 		damage = 1;
-		speed = -30;
-		maxSpeed = 40;
-		
-		
-		
-		acceleration.x = speed;
-		maxVelocity.x = maxSpeed;	
+		acceleration.set(-30, 400);
+		maxVelocity.set(40,400);
 	}
 
 }
