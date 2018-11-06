@@ -90,21 +90,15 @@ class PlayState extends FlxState
 		FlxG.overlap(player, coins, playerTouchCoin);
 		FlxG.overlap(player, enemies, playerTouchEnemy);
 		
-		
-		
 		for (enemy in enemies)
 			level.collideWithLevel(enemy);	
-
 		FlxG.collide(edges, enemies, enemyTouchEdge);
-			
 	}
 	
 	private function enemyTouchEdge (_edge : FlxObject, _enemy : Enemy) : Void
 	{
 		if (_enemy.alive)
-		{
 			_enemy.Turn();
-		}
 	}
 	
 	private function playerTouchCoin (_player : Player, _coin : Coin) : Void

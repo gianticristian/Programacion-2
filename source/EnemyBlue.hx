@@ -11,8 +11,8 @@ class EnemyBlue extends Enemy
 
 		animation.add("Walk", [6, 7, 8, 9, 10, 11], 6);
 		
-		health = 1;
-		damage = 1;
+		health = 3;
+		damage = 2;
 		acceleration.set(-30, 400);
 		maxVelocity.set(30,400);
 	}

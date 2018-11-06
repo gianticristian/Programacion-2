@@ -238,7 +238,11 @@ class TiledLevel extends TiledMap
 				var coin = new Coin(x, y);				
 				state.coins.add(coin);
 			case "enemies":
-				var enemy = new EnemyBlue(x, y);				
+				var enemy = new Enemy();
+				if (o.name == "Blue")
+					enemy = new EnemyBlue(x, y);				
+				else
+					enemy = new EnemyRed(x, y);				
 				state.enemies.add(enemy);
 			case "exit":
 				// Create the level exit
