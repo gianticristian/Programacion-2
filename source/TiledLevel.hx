@@ -13,7 +13,6 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledTileSet;
 import flixel.addons.editors.tiled.TiledTilePropertySet;
 import flixel.group.FlxGroup;
-import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
 import flixel.addons.tile.FlxTilemapExt;
 import flixel.addons.tile.FlxTileSpecial;
@@ -136,49 +135,40 @@ class TiledLevel extends TiledMap
 				continue;
 			var objectLayer:TiledObjectLayer = cast layer;
 
-			//collection of images layer
 			if (layer.name == "images")
 			{
 				for (o in objectLayer.objects)
-				{
 					loadImageObject(o);
-				}
 			}
 			
-			//objects layer
 			if (layer.name == "objects")
 			{
 				for (o in objectLayer.objects)
-				{
 					loadObject(state, o, objectLayer, objectsLayer);
-				}
 			}
 			
-			// Player's start layer
+			if (layer.name == "Edge")
+			{
+				for (o in objectLayer.objects)
+					loadObject(state, o, objectLayer, objectsLayer);
+			}
+			
 			if (layer.name == "Player")
 			{
 				for (o in objectLayer.objects)
-				{
 					loadObject(state, o, objectLayer, objectsLayer);
-				}
 			}
 			
-			// Coins layer
 			if (layer.name == "Coins")
 			{
 				for (o in objectLayer.objects)
-				{
 					loadObject(state, o, objectLayer, objectsLayer);
-				}
 			}
 			
-			// Enemies layer
 			if (layer.name == "Enemies")
 			{
 				for (o in objectLayer.objects)
-				{
 					loadObject(state, o, objectLayer, objectsLayer);
-				}
 			}
 		}
 	}
@@ -230,7 +220,6 @@ class TiledLevel extends TiledMap
 		
 		// objects in tiled are aligned bottom-left (top-left in flixel)
 		if (o.gid != -1)
-			// Linea original, de esta forma sube en Y pero queda desfasado
 			y -= g.map.getGidOwner(o.gid).tileHeight;
 		
 		switch (o.type.toLowerCase())
@@ -238,9 +227,13 @@ class TiledLevel extends TiledMap
 			case "player":		
 				var player = new Player(x, y, state.poolPunch, state.poolKick);
 				state.player = player;
-			case "floor":
-				var floor = new FlxObject(x, y, o.width, o.height);
-				state.floor = floor;	
+			//case "floor":
+				//var floor = new FlxObject(x, y, o.width, o.height);
+				//state.floor = floor;	
+			case "edge":
+				var edge = new FlxObject(x, y, o.width, o.height);
+				edge.immovable = true;
+				state.edges.add(edge);	
 			case "coin":
 				var coin = new Coin(x, y);				
 				state.coins.add(coin);

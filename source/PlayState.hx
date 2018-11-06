@@ -6,7 +6,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup;
-//import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import Player;
 
@@ -26,7 +25,8 @@ class PlayState extends FlxState
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
 	public var enemies:FlxTypedGroup<Enemy>;
-	public var floor:FlxObject;
+	//public var floor:FlxObject;
+	public var edges:FlxTypedGroup<FlxObject>;
 	public var exit:FlxSprite;
 	public var cameraGame:FlxCamera;
 	public var cameraUI:FlxCamera;
@@ -38,12 +38,15 @@ class PlayState extends FlxState
 		
 		coins = new FlxGroup();
 		enemies = new FlxTypedGroup<Enemy>();
+		edges = new FlxTypedGroup<FlxObject>();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
+
 		
 		// Add backgrounds
 		//add(level.backgroundLayer);
 
 		add(coins);
+		add(edges);
 		// Add static images
 		add(level.imagesLayer);
 		// Load player objects
@@ -87,15 +90,21 @@ class PlayState extends FlxState
 		FlxG.overlap(player, coins, playerTouchCoin);
 		FlxG.overlap(player, enemies, playerTouchEnemy);
 		
-		//FlxG.collide(level, enemies);
+		
 		
 		for (enemy in enemies)
+			level.collideWithLevel(enemy);	
+
+		FlxG.collide(edges, enemies, enemyTouchEdge);
+			
+	}
+	
+	private function enemyTouchEdge (_edge : FlxObject, _enemy : Enemy) : Void
+	{
+		if (_enemy.alive)
 		{
-			level.collideWithLevel(enemy);
+			_enemy.Turn();
 		}
-			
-			
-		
 	}
 	
 	private function playerTouchCoin (_player : Player, _coin : Coin) : Void
