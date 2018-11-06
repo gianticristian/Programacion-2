@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxSprite;
 import flixel.FlxObject;
+import flixel.math.FlxPoint;
 
 
 class Enemy extends FlxSprite 
@@ -40,4 +41,18 @@ class Enemy extends FlxSprite
 	{
 		animation.play("Walk");		
 	}
+	
+	private function Turn()
+	{
+
+		if (facing == FlxObject.RIGHT)
+			facing = FlxObject.LEFT;
+		if (facing == FlxObject.LEFT)
+			facing = FlxObject.RIGHT;
+		
+		//acceleration.x *= -1;
+		//velocity.x *= -1;
+	}
+	
+	
 }
