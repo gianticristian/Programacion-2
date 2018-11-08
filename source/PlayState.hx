@@ -89,10 +89,30 @@ class PlayState extends FlxState
 		level.collideWithLevel(player);		
 		FlxG.overlap(player, coins, playerTouchCoin);
 		FlxG.overlap(player, enemies, playerTouchEnemy);
+		FlxG.overlap(enemies, poolPunch, enemyTouchPunch);
+		FlxG.overlap(enemies, poolKick, enemyTouchKick);
+		FlxG.collide(edges, enemies, enemyTouchEdge);
 		
 		for (enemy in enemies)
 			level.collideWithLevel(enemy);	
-		FlxG.collide(edges, enemies, enemyTouchEdge);
+	}
+	
+	private function enemyTouchPunch (_enemy : Enemy, _punch : Punch) : Void
+	{
+		if (_enemy.alive && _punch.alive)
+		{
+			_enemy.Hurt(1);
+			_punch.kill();
+		}
+	}
+	
+	private function enemyTouchKick (_enemy : Enemy, _kick : Kick) : Void
+	{
+		if (_enemy.alive && _kick.alive)
+		{
+			_enemy.Hurt(1);
+			_kick.kill();
+		}
 	}
 	
 	private function enemyTouchEdge (_edge : FlxObject, _enemy : Enemy) : Void

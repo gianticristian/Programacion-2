@@ -33,7 +33,7 @@ class Enemy extends FlxSprite
 	
 	public function Dead()
 	{
-		trace("I am dead");
+		kill();
 	}
 	
 	private function Walk()

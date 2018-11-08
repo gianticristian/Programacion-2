@@ -245,7 +245,6 @@ class TiledLevel extends TiledMap
 					enemy = new EnemyRed(x, y);				
 				state.enemies.add(enemy);
 			case "exit":
-				// Create the level exit
 				var exit = new FlxSprite(x, y);
 				exit.makeGraphic(32, 32, 0xff3f3f3f);
 				exit.exists = false;
