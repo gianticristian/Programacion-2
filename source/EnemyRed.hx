@@ -11,13 +11,14 @@ class EnemyRed extends Enemy
 		updateHitbox();
 
 		animation.add("Walk", [0, 1, 2, 3, 4, 5], 6);
-		
-		
+		animation.add("Hurt", [6, 7], 3, false);
 		
 		health = 2;
 		damage = 3;
 		acceleration.set(-30, 400);
-		maxVelocity.set(30,400);
+		maxVelocity.set(30, 400);
+		
+		animation.play("Walk");
 	}
 	
 }

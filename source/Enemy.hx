@@ -15,32 +15,29 @@ class Enemy extends FlxSprite
 		super(X, Y);
 		facing = FlxObject.LEFT;
 		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
+		setFacingFlip(FlxObject.RIGHT, true, false);	
 	}
 	
 	override public function update (elapsed : Float)
     {
-		Walk();
 		super.update(elapsed);
     }
 	
 	public function Hurt(damage : Int)
 	{
+	
 		health -= damage;
-		if (health < 1)
-			Dead();
+		animation.play("Hurt");
+		
+		animation.finishCallback = function L(s : String)
+		{
+			if (health < 1)
+				kill();
+			else
+				animation.play("Walk");
+		}
 	}
-	
-	public function Dead()
-	{
-		kill();
-	}
-	
-	private function Walk()
-	{
-		animation.play("Walk");		
-	}
-	
+
 	public function Turn()
 	{
 		if (facing == FlxObject.LEFT)
