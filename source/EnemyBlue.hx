@@ -10,10 +10,14 @@ class EnemyBlue extends Enemy
 		updateHitbox();
 
 		animation.add("Walk", [6, 7, 8, 9, 10, 11], 6);
+		animation.add("Hurt", [13], 5, false);
+		animation.add("Die", [12], 1, false);
 		
 		health = 3;
 		damage = 2;
-		acceleration.set(-30, 400);
-		maxVelocity.set(30,400);
+		acceleration.set(-30, 300);
+		maxVelocity.set(30, 300);
+		
+		animation.play("Walk");
 	}
 }

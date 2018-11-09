@@ -64,8 +64,8 @@
   <properties>
    <property name="defaultType" value="enemies"/>
   </properties>
-  <object id="28" name="Blue" gid="15" x="176" y="288" width="16" height="16"/>
-  <object id="41" name="Red" gid="9" x="176" y="336" width="16" height="16"/>
+  <object id="28" name="Blue" gid="15" x="144" y="336" width="16" height="16"/>
+  <object id="41" name="Red" gid="9" x="192" y="288" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="5" name="Edge">
   <properties>

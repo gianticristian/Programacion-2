@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxSprite;
 import flixel.FlxObject;
+import flixel.tweens.FlxTween;
 
 
 class Enemy extends FlxSprite 
@@ -25,18 +26,40 @@ class Enemy extends FlxSprite
 	
 	public function Hurt(damage : Int)
 	{
-	
 		health -= damage;
+		var accelerationTemp = acceleration.x;
+		acceleration.x = 0;
 		velocity.x = 0;
 		animation.play("Hurt");
 		
-		animation.finishCallback = function L(s : String)
+		if (health < 1)
+			Die();
+		
+		animation.finishCallback = function HurtContinue(_animation : String)
 		{
-			if (health < 1)
-				kill();
-			else
-				animation.play("Walk");
+			acceleration.x = accelerationTemp;
+			animation.play("Walk");
 		}
+	}
+	
+	private function Die()
+	{
+		animation.play("Die");
+		solid = false;
+		
+		FlxTween.tween(this, { y: y - 10}, .1, 
+		{
+			onComplete: function(_)
+			{
+				FlxTween.tween	( this, { alpha: 0.1 }, 1, 
+				{
+					onComplete: function(_) 
+					{
+						kill();
+					}
+				});
+			}
+		});		
 	}
 
 	public function Turn()

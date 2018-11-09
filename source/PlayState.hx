@@ -16,7 +16,7 @@ class PlayState extends FlxState
 	public var player:Player;
 	// Punch pool objects
 	public var poolPunch : FlxTypedGroup<Punch>;
-	public var poolPunchSize : Int = 20;
+	public var poolPunchSize : Int = 10;
 	// Kick pool objects
 	public var poolKick : FlxTypedGroup<Kick>;
 	public var poolKickSize : Int = 10;
