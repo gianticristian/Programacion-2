@@ -27,6 +27,7 @@ class Enemy extends FlxSprite
 	{
 	
 		health -= damage;
+		velocity.x = 0;
 		animation.play("Hurt");
 		
 		animation.finishCallback = function L(s : String)
