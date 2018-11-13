@@ -26,6 +26,7 @@ class Player extends FlxSprite
 	public var beingHurt : Bool = false;
 	
 	public var jumpSound : FlxSound;
+	public var attackSound : FlxSound;
 	
 	private var punchs : FlxTypedGroup<Punch>;
 	private var kicks : FlxTypedGroup<Kick>;
@@ -46,6 +47,8 @@ class Player extends FlxSprite
 		
 		jumpSound = FlxG.sound.load("assets/sounds/Jump.wav");
 		jumpSound.volume = 0.1;
+		attackSound = FlxG.sound.load("assets/sounds/Attack.wav");
+		attackSound.volume = 0.1;
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Hurt", [4], 2, false);
@@ -151,6 +154,7 @@ class Player extends FlxSprite
 	
 	public function attack()
 	{
+		attackSound.play();
 		if (isTouching(FlxObject.DOWN))
 		{
 			animation.play("Punch");
