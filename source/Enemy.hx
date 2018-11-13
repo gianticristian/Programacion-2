@@ -2,6 +2,8 @@ package;
 
 import flixel.FlxSprite;
 import flixel.FlxObject;
+import flixel.FlxG;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 
 
@@ -10,6 +12,8 @@ class Enemy extends FlxSprite
 	public var damage : Int;
     public var speed : Int;
 	public var maxSpeed : Int;
+	public var hurtSound : FlxSound;
+	
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
@@ -17,6 +21,9 @@ class Enemy extends FlxSprite
 		facing = FlxObject.LEFT;
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);	
+		
+		hurtSound = FlxG.sound.load("assets/sounds/Enemy Hurt.wav");
+		hurtSound.volume = 0.3;
 	}
 	
 	override public function update (elapsed : Float)
@@ -27,10 +34,12 @@ class Enemy extends FlxSprite
 	public function Hurt(damage : Int)
 	{
 		health -= damage;
+		animation.play("Hurt");
+		hurtSound.play();
 		var accelerationTemp = acceleration.x;
 		acceleration.x = 0;
 		velocity.x = 0;
-		animation.play("Hurt");
+
 		
 		if (health < 1)
 			Die();
