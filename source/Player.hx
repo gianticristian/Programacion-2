@@ -16,7 +16,7 @@ class Player extends FlxSprite
 	public var attackDeceleration : Float = 0.1;
 	public var attackAcceleration : Float = 1.1;
 	public var rotationSpeed : Int = 3;
-    public var jumpSpeed : Int = 200;
+    public var jumpSpeed : Int = 220;
 	public var pressedLeft : Bool = false;
 	public var pressedRight : Bool = false;
 	public var pressedJump : Bool = false;

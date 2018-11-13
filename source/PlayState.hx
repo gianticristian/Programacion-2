@@ -34,8 +34,8 @@ class PlayState extends FlxState
 	override public function create () : Void 
 	{
 		//FlxG.mouse.visible = false;
-		createPool();
 		
+		createPool();
 		coins = new FlxGroup();
 		enemies = new FlxTypedGroup<Enemy>();
 		edges = new FlxTypedGroup<FlxObject>();
@@ -53,9 +53,11 @@ class PlayState extends FlxState
 		add(level.objectsLayer);
 		// Add foreground tiles after adding level objects, so these tiles render on top of player
 		add(level.foregroundTiles);
-		// Add enemies
+		
 		add(enemies);
 		add(player);
+		add(poolPunch);
+		add(poolKick);
 		
 		// Level camera
 		cameraGame = new FlxCamera();
@@ -64,10 +66,12 @@ class PlayState extends FlxState
 		cameraGame.zoom = 3;
 		cameraGame.bgColor = FlxColor.WHITE;
 		cameraGame.follow(player, FlxCameraFollowStyle.PLATFORMER, 2);
+		
 		// UI camera
 		cameraUI = new FlxCamera();
 		FlxG.cameras.add(cameraUI);
 		cameraUI.bgColor = FlxColor.TRANSPARENT;
+		
 		// UI class		
 		ui = new UI(0, 0);
 		ui.camera = cameraUI;		
@@ -150,7 +154,7 @@ class PlayState extends FlxState
 			punch.kill();
 			poolPunch.add(punch);
 		}
-		add(poolPunch);
+		//add(poolPunch);
 		
 		poolKick = new FlxTypedGroup<Kick>(poolKickSize);
 		for (i in 0...poolKickSize) 
@@ -159,6 +163,6 @@ class PlayState extends FlxState
 			kick.kill();
 			poolKick.add(kick);
 		}
-		add(poolKick);
+		//add(poolKick);
 	}
 }
