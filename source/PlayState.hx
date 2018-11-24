@@ -12,6 +12,8 @@ import Player;
 
 class PlayState extends FlxState
 {
+	static public var instance : PlayState;
+
 	private var ui : UI;
 	public var player:Player;
 	// Punch pool objects
@@ -20,7 +22,6 @@ class PlayState extends FlxState
 	// Kick pool objects
 	public var poolKick : FlxTypedGroup<Kick>;
 	public var poolKickSize : Int = 10;
-	
 	
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
@@ -33,6 +34,8 @@ class PlayState extends FlxState
 	
 	override public function create () : Void 
 	{
+		PlayState.instance = this;
+		
 		//FlxG.mouse.visible = false;
 		
 		createPool();
@@ -40,7 +43,6 @@ class PlayState extends FlxState
 		enemies = new FlxTypedGroup<Enemy>();
 		edges = new FlxTypedGroup<FlxObject>();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
-
 		
 		// Add backgrounds
 		//add(level.backgroundLayer);

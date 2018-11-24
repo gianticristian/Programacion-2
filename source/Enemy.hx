@@ -47,6 +47,7 @@ class Enemy extends FlxSprite
 		animation.finishCallback = function HurtContinue(_animation : String)
 		{
 			acceleration.x = accelerationTemp;
+			IsPlayerBehind();
 			animation.play("Walk");
 		}
 	}
@@ -69,6 +70,14 @@ class Enemy extends FlxSprite
 				});
 			}
 		});		
+	}
+	
+	private function IsPlayerBehind()
+	{
+		if (PlayState.instance.player.x < x && facing == FlxObject.RIGHT)
+			Turn();
+		if (PlayState.instance.player.x > x && facing == FlxObject.LEFT)
+			Turn();
 	}
 
 	public function Turn()
