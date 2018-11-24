@@ -3,6 +3,7 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.addons.util.FlxFSM;
+import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
@@ -12,7 +13,7 @@ class Player extends FlxSprite
 	public var gravity : Int = 500;
     public var speed : Int = 200;
 	public var maxSpeed : Int = 250;
-	public var deceleration : Float = 0.9;
+	public var deceleration : Float = 0.5;
 	public var attackDeceleration : Float = 0.1;
 	public var attackAcceleration : Float = 1.1;
 	public var rotationSpeed : Int = 3;
@@ -24,6 +25,9 @@ class Player extends FlxSprite
 	public var attackPoint : Float = 0;
 	public var money : Int = 0;
 	public var beingHurt : Bool = false;
+	
+	private var spawnPoint : FlxPoint;
+	private var healthDefault : Int = 2;
 	
 	public var jumpSound : FlxSound;
 	public var attackSound : FlxSound;
@@ -37,7 +41,8 @@ class Player extends FlxSprite
 	public function new (?X : Float = 0, ?Y : Float = 0, poolPunch : FlxTypedGroup<Punch>, poolKick : FlxTypedGroup<Kick>)
 	{
 		super(X, Y);
-		health = 10;
+		spawnPoint = getPosition();	
+		health = healthDefault;
 		punchs = poolPunch;
 		kicks = poolKick;
 		loadGraphic("assets/images/Player.png", true, 16, 16); 
@@ -184,7 +189,15 @@ class Player extends FlxSprite
 			return;
 			
 		beingHurt = true;
-		super.hurt(damage);
+		health -= damage;
+	}
+
+	public function Spawn ()
+	{
+		health = healthDefault;
+		setPosition(spawnPoint.x, spawnPoint.y);
+		velocity.x = 0;
+		velocity.y = 0;
 	}
 }
 
@@ -288,6 +301,8 @@ class Hurt extends FlxFSMState<Player>
 	override public function exit(owner:Player):Void
 	{
 		owner.beingHurt = false;
+		if (owner.health < 1)
+			PlayState.instance.PlayerDie();
 	}
 }
 

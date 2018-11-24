@@ -43,7 +43,7 @@ class PlayState extends FlxState
 		enemies = new FlxTypedGroup<Enemy>();
 		edges = new FlxTypedGroup<FlxObject>();
 		level = new TiledLevel("assets/tiled/level_1.tmx", this);
-		
+
 		// Add backgrounds
 		//add(level.backgroundLayer);
 
@@ -156,7 +156,6 @@ class PlayState extends FlxState
 			punch.kill();
 			poolPunch.add(punch);
 		}
-		//add(poolPunch);
 		
 		poolKick = new FlxTypedGroup<Kick>(poolKickSize);
 		for (i in 0...poolKickSize) 
@@ -165,6 +164,11 @@ class PlayState extends FlxState
 			kick.kill();
 			poolKick.add(kick);
 		}
-		//add(poolKick);
+	}
+	
+	public function PlayerDie()
+	{
+		player.Spawn();
+		ui.updateHealth(player.health);
 	}
 }

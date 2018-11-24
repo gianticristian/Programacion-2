@@ -14,7 +14,7 @@ class EnemyBlue extends Enemy
 		animation.add("Die", [12], 1, false);
 		
 		health = 3;
-		damage = 2;
+		damage = 1;
 		acceleration.set(-30, 300);
 		maxVelocity.set(30, 300);
 		

@@ -14,7 +14,7 @@ class EnemyRed extends Enemy
 		animation.add("Die", [6], 1, false);
 		
 		health = 2;
-		damage = 3;
+		damage = 2;
 		acceleration.set(-30, 300);
 		maxVelocity.set(30, 300);
 		

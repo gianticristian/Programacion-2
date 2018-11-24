@@ -27,11 +27,15 @@ class UI extends FlxSpriteGroup
 	
 	public function updateHealth(value:Float)
 	{
+		if (value < 0)
+			value = 0;
 		healthText.text = "Health: " + value;
 	}
 	
 	public function updateMoney(value : Int)
 	{
+		if (value < 0)
+			value = 0;
 		moneyText.text = "Money: " + value;
 	}
 }
