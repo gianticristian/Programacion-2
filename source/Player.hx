@@ -51,9 +51,9 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
 		jumpSound = FlxG.sound.load("assets/sounds/Jump.wav");
-		jumpSound.volume = 0.1;
+		jumpSound.volume = 1;
 		attackSound = FlxG.sound.load("assets/sounds/Attack.wav");
-		attackSound.volume = 0.1;
+		attackSound.volume = 1;
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Hurt", [4], 2, false);
@@ -159,7 +159,7 @@ class Player extends FlxSprite
 	
 	public function attack()
 	{
-		attackSound.play();
+		attackSound.play(true);
 		if (isTouching(FlxObject.DOWN))
 		{
 			animation.play("Punch");

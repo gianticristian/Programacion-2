@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup;
+import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import Player;
 
@@ -26,11 +27,12 @@ class PlayState extends FlxState
 	public var level:TiledLevel;
 	public var coins:FlxGroup;
 	public var enemies:FlxTypedGroup<Enemy>;
-	//public var floor:FlxObject;
 	public var edges:FlxTypedGroup<FlxObject>;
 	public var exit:FlxSprite;
 	public var cameraGame:FlxCamera;
 	public var cameraUI:FlxCamera;
+	
+	public var music : FlxSound;
 	
 	override public function create () : Void 
 	{
@@ -80,6 +82,13 @@ class PlayState extends FlxState
 		add(ui);
 		ui.updateMoney(player.money);
 		ui.updateHealth(player.health);
+		
+		// SFX
+		music = FlxG.sound.load("assets/sounds/Level Music.wav");
+		music.looped = true;
+		music.volume = 0.3;
+		music.play();
+		
 		
 		super.create();
 	}
