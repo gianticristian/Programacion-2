@@ -31,6 +31,7 @@ class Player extends FlxSprite
 	
 	public var jumpSound : FlxSound;
 	public var attackSound : FlxSound;
+	public var hurtSound : FlxSound;
 	
 	private var punchs : FlxTypedGroup<Punch>;
 	private var kicks : FlxTypedGroup<Kick>;
@@ -54,6 +55,8 @@ class Player extends FlxSprite
 		jumpSound.volume = 1;
 		attackSound = FlxG.sound.load("assets/sounds/Attack.wav");
 		attackSound.volume = 1;
+		hurtSound = FlxG.sound.load("assets/sounds/Player Hurt.wav");
+		hurtSound.volume = 1;
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Hurt", [4], 2, false);
@@ -190,6 +193,7 @@ class Player extends FlxSprite
 			
 		beingHurt = true;
 		health -= damage;
+		hurtSound.play(true);
 	}
 
 	public function Spawn ()
@@ -302,7 +306,7 @@ class Hurt extends FlxFSMState<Player>
 	{
 		owner.beingHurt = false;
 		if (owner.health < 1)
-			PlayState.instance.PlayerDie();
+			PlayState.instance.PlayerDie();	
 	}
 }
 
