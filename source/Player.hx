@@ -6,6 +6,7 @@ import flixel.addons.util.FlxFSM;
 import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tweens.FlxTween;
 
 
 class Player extends FlxSprite
@@ -300,13 +301,17 @@ class Hurt extends FlxFSMState<Player>
 	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
 	{
 		owner.decelerate();
+		owner.alpha -= 1 * elapsed;
 	}
 	
 	override public function exit(owner:Player):Void
 	{
 		owner.beingHurt = false;
-		if (owner.health < 1)
-			PlayState.instance.PlayerDie();	
+		owner.solid = false;
+		if (owner.health < 1) 
+			PlayState.instance.PlayerDie();
+		owner.solid = true;
+		owner.alpha = 1;
 	}
 }
 

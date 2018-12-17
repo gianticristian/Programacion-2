@@ -61,7 +61,7 @@ class Enemy extends FlxSprite
 		{
 			onComplete: function(_)
 			{
-				FlxTween.tween	( this, { alpha: 0.1 }, 1, 
+				FlxTween.tween(this, { alpha: 0.1 }, 1, 
 				{
 					onComplete: function(_) 
 					{
