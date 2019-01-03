@@ -6,7 +6,6 @@ import flixel.addons.util.FlxFSM;
 import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.tweens.FlxTween;
 
 
 class Player extends FlxSprite
