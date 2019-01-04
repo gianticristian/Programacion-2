@@ -20,6 +20,7 @@
     <class path="C:\Program Files\Haxe\haxe\lib\lime\6,4,0" />
     <class path="C:\Program Files\Haxe\haxe\lib\hscript\2,2,0" />
     <class path="C:\Program Files\Haxe\haxe\lib\flixel-addons\2,6,0" />
+    <class path="C:\Program Files\Haxe\haxe\lib\flixel-ui\2,3,1" />
     <class path="source" />
     <class path="C:\Program Files\Haxe\haxe\lib\openfl\8,3,0\src\externs\core\flash" />
     <class path="C:\Program Files\Haxe\haxe\lib\openfl\8,3,0\src\externs\core\openfl" />
@@ -28,7 +29,7 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel=4.4.2&#xA;openfl=8.3.0&#xA;lime=6.4.0&#xA;hscript=2.2.0&#xA;flixel-addons=2.6.0&#xA;tools=6.4.0&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
+    <option directives="flixel=4.4.2&#xA;openfl=8.3.0&#xA;lime=6.4.0&#xA;hscript=2.2.0&#xA;flixel-addons=2.6.0&#xA;flixel-ui=2.3.1&#xA;tools=6.4.0&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
