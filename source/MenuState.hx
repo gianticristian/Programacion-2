@@ -8,6 +8,7 @@ import flixel.util.FlxColor;
 
 import flixel.addons.ui.FlxUIButton;
 
+
 class MenuState extends FlxState
 {
 	private var title : FlxText;
@@ -15,7 +16,7 @@ class MenuState extends FlxState
 	private var start : FlxButton;
 	private var credits : FlxButton;
 	
-	private var but : FlxUIButton;
+	private var exit : FlxUIButton;
 	
 	override public function create () : Void
 	{
@@ -45,12 +46,14 @@ class MenuState extends FlxState
 		
 		
 		// But
-		but = new FlxUIButton(100 , 100, "But");
-		but.setLabelFormat("blue highway linocut.ttf", 16);
+		exit = new FlxUIButton(0, 0, "Exit");
+		exit.setLabelFormat("Minercraftory.ttf", 40, FlxColor.WHITE, "center", FlxTextBorderStyle.OUTLINE ,FlxColor.BLACK );
 		
 		
-		
-		add(but);
+		exit.resize(200, 80);
+		exit.autoCenterLabel();
+		exit.setPosition(FlxG.width / 2 - exit.width / 2, FlxG.height / 1.2); 
+		add(exit);
 		
 		
 	}
