@@ -1,22 +1,22 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
-import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-
-import flixel.addons.ui.FlxUIButton;
+using flixel.util.FlxSpriteUtil;
 
 
 class MenuState extends FlxState
 {
 	private var title : FlxText;
 	private var version : FlxText;
-	private var start : FlxButton;
-	private var credits : FlxButton;
+	private var start : FlxText;
+	private var credits : FlxText;
 	
-	private var exit : FlxUIButton;
+	
+	private var pointer: FlxSprite; 
 	
 	override public function create () : Void
 	{
@@ -29,37 +29,43 @@ class MenuState extends FlxState
 		title.antialiasing = true;
 		add(title);
 		// Start
-		start = new FlxButton(0, 0, "", ClickStart);
-		start.loadGraphic("assets/images/Start.png", true, 102, 41);
-		start.x = FlxG.width / 2 - start.width / 2;
-		start.y = FlxG.height / 2;
+		start = new FlxText();
+		start.text = "Start";
+		start.setFormat("assets/fonts/Minercraftory.ttf", 40, FlxColor.WHITE, FlxTextAlign.CENTER);
+		start.setPosition(FlxG.width / 2 - start.width / 2, FlxG.height / 2);
 		start.antialiasing = true;
         add(start);
 		// Credits
-		credits = new FlxButton(0, 0, "", ClickCredits);
-		credits.loadGraphic("assets/images/Credits.png", true, 143, 41);
-		credits.x = FlxG.width / 2 - credits.width / 2;
-		credits.y = FlxG.height / 1.5;
+		credits = new FlxText();
+		credits.text = "Credits";
+		credits.setFormat("assets/fonts/Minercraftory.ttf", 40, FlxColor.WHITE, FlxTextAlign.CENTER);
+		credits.setPosition(FlxG.width / 2 - credits.width / 2, FlxG.height / 1.5);
 		credits.antialiasing = true;
-        add(credits);
-		
-		
-		
-		// But
-		exit = new FlxUIButton(0, 0, "Exit");
-		exit.setLabelFormat("Minercraftory.ttf", 40, FlxColor.WHITE, "center", FlxTextBorderStyle.OUTLINE ,FlxColor.BLACK );
-		
-		
-		exit.resize(200, 80);
-		exit.autoCenterLabel();
-		exit.setPosition(FlxG.width / 2 - exit.width / 2, FlxG.height / 1.2); 
-		add(exit);
+        add(credits);		
+		// Pointer
+		pointer = new FlxSprite();
+		pointer.makeGraphic(300, 50, FlxColor.TRANSPARENT, true);
+		pointer.setPosition(start.x - start.width / 4, start.y); 
+		pointer.drawRect(0, 0, 300, 3, FlxColor.WHITE);
+		pointer.drawRect(0, 47, 300, 3, FlxColor.WHITE);
+		pointer.drawRect(0, 0, 3, 300, FlxColor.WHITE);
+		pointer.drawRect(297, 0, 3, 50, FlxColor.WHITE);
+		add(pointer);
 		
 		
 	}
 
 	override public function update (elapsed : Float) : Void
 	{
+		if (FlxG.keys.anyJustPressed([UP, W]))
+		{
+			pointer.y -= 10;
+		}
+		if (FlxG.keys.anyJustPressed([DOWN, S]))
+		{
+			pointer.y += 10;
+		}
+		
 		super.update(elapsed);
 	}
 	
