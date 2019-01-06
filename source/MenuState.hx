@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.system.FlxSound;
+import openfl.Lib;
 using flixel.util.FlxSpriteUtil;
 
 
@@ -14,55 +15,71 @@ class MenuState extends FlxState
 	private var title : FlxText;
 	private var version : FlxText;
 	private var start : FlxText;
+	private var options : FlxText;
 	private var credits : FlxText;
+	private var exit : FlxText;
 	
 	
 	private var pointer: FlxSprite; 
 	private var menu : Array<FlxText>;
 	private var selected : Int = 0;
-	private var selectedSound : FlxSound;
+	private var selectedChange : FlxSound;
 	
 	override public function create () : Void
 	{
 		super.create();
 		camera.bgColor.setRGB(255,77,77);
 		// Title
-		title = new FlxText(0, 100, FlxG.width);
+		title = new FlxText(0, 70, FlxG.width);
 		title.text = "Titulo Principal";
-		title.setFormat("assets/fonts/Minercraftory.ttf", 41, FlxColor.WHITE, FlxTextAlign.CENTER);
+		title.setFormat("assets/fonts/Minercraftory.ttf", 50, FlxColor.WHITE, FlxTextAlign.CENTER);
 		title.antialiasing = true;
 		add(title);
 		// Start
 		start = new FlxText();
 		start.text = "Start";
-		start.setFormat("assets/fonts/Minercraftory.ttf", 40, FlxColor.WHITE, FlxTextAlign.CENTER);
+		start.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
 		start.setPosition(FlxG.width / 2 - start.width / 2, FlxG.height / 2);
 		start.antialiasing = true;
+		// Options
+		options = new FlxText();
+		options.text = "Options";
+		options.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
+		options.setPosition(FlxG.width / 2 - options.width / 2, FlxG.height / 2 + options.height);
+		options.antialiasing = true;
 		// Credits
 		credits = new FlxText();
 		credits.text = "Credits";
-		credits.setFormat("assets/fonts/Minercraftory.ttf", 40, FlxColor.WHITE, FlxTextAlign.CENTER);
-		credits.setPosition(FlxG.width / 2 - credits.width / 2, FlxG.height / 1.5);
+		credits.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
+		credits.setPosition(FlxG.width / 2 - credits.width / 2, FlxG.height / 2 + credits.height * 2);
 		credits.alpha = 0.5;
 		credits.antialiasing = true;
+		// Exit
+		exit = new FlxText();
+		exit.text = "Exit";
+		exit.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
+		exit.setPosition(FlxG.width / 2 - exit.width / 2, FlxG.height / 2 + exit.height * 3);
+		exit.antialiasing = true;
 		// Menu
 		menu = new Array<FlxText>();
 		menu.push(start);
+		menu.push(options);
 		menu.push(credits);
-		add(menu[0]);
-		add(menu[1]);
+		menu.push(exit);
+		for (item in menu)
+			add(item);
 		// Pointer
 		pointer = new FlxSprite();
-		pointer.makeGraphic(250, 70, FlxColor.TRANSPARENT, true);
+		pointer.makeGraphic(250, 50, FlxColor.TRANSPARENT, true);
 		pointer.setPosition(FlxG.width / 2 - pointer.width / 2, menu[selected].y); 
 		pointer.drawRect(5, 0, 240, 5, FlxColor.WHITE);
-		pointer.drawRect(5, 65, 240, 5, FlxColor.WHITE);
-		pointer.drawRect(0, 5, 5, 60, FlxColor.WHITE);
-		pointer.drawRect(245, 5, 5, 60, FlxColor.WHITE);
+		pointer.drawRect(5, 45, 240, 5, FlxColor.WHITE);
+		pointer.drawRect(0, 5, 5, 40, FlxColor.WHITE);
+		pointer.drawRect(245, 5, 5, 40, FlxColor.WHITE);
 		add(pointer);
 		// Sound
-		selectedSound = FlxG.sound.load("assets/sounds/Selected.wav");
-		selectedSound.volume = 1;
+		selectedChange = FlxG.sound.load("assets/sounds/Selected.wav");
+		selectedChange.volume = 1;
 	}
 
 	override public function update (elapsed : Float) : Void
@@ -75,7 +92,7 @@ class MenuState extends FlxState
 				selected--;
 				menu[selected].alpha = 1;
 				pointer.y = menu[selected].y;
-				selectedSound.play();
+				selectedChange.play();
 			}
 		}
 		if (FlxG.keys.anyJustPressed([DOWN, S]))
@@ -86,7 +103,7 @@ class MenuState extends FlxState
 				selected++;
 				menu[selected].alpha = 1;
 				pointer.y = menu[selected].y;
-				selectedSound.play();
+				selectedChange.play();
 			}
 		}
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
@@ -94,16 +111,18 @@ class MenuState extends FlxState
 			FlxG.camera.fade(FlxColor.BLACK, 2.0, false, ChangeState);
 		}
 		
+		
+		
 		super.update(elapsed);
 	}
 	
 	private function ChangeState () : Void
 	{
-		switch (selected) 
+		switch (menu[selected].text) 
 		{
-			case 0:
+			case "Start":
 				FlxG.switchState(new PlayState());
-			case 1:
+			case "Credits":
 				FlxG.switchState(new Credits());
 			default:
 				trace("State not found");
