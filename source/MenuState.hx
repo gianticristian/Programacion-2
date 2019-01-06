@@ -23,7 +23,8 @@ class MenuState extends FlxState
 	private var pointer: FlxSprite; 
 	private var menu : Array<FlxText>;
 	private var selected : Int = 0;
-	private var selectedChange : FlxSound;
+	private var menuChange : FlxSound;
+	private var menuSelected : FlxSound;
 	
 	override public function create () : Void
 	{
@@ -78,8 +79,10 @@ class MenuState extends FlxState
 		pointer.drawRect(245, 5, 5, 40, FlxColor.WHITE);
 		add(pointer);
 		// Sound
-		selectedChange = FlxG.sound.load("assets/sounds/Selected.wav");
-		selectedChange.volume = 1;
+		menuChange = FlxG.sound.load("assets/sounds/MenuChange.wav");
+		menuChange.volume = 1;
+		menuSelected = FlxG.sound.load("assets/sounds/MenuSelected.wav");
+		menuSelected.volume = 1;
 	}
 
 	override public function update (elapsed : Float) : Void
@@ -92,7 +95,7 @@ class MenuState extends FlxState
 				selected--;
 				menu[selected].alpha = 1;
 				pointer.y = menu[selected].y;
-				selectedChange.play();
+				menuChange.play();
 			}
 		}
 		if (FlxG.keys.anyJustPressed([DOWN, S]))
@@ -103,12 +106,13 @@ class MenuState extends FlxState
 				selected++;
 				menu[selected].alpha = 1;
 				pointer.y = menu[selected].y;
-				selectedChange.play();
+				menuChange.play();
 			}
 		}
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 2.0, false, ChangeState);
+			menuSelected.play();
 		}
 		
 		
