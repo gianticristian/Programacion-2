@@ -6,9 +6,9 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.system.FlxSound;
-import openfl.Lib;
-using flixel.util.FlxSpriteUtil;
+import flash.system.System;
 
+using flixel.util.FlxSpriteUtil;
 
 class MenuState extends FlxState
 {
@@ -47,6 +47,7 @@ class MenuState extends FlxState
 		options.text = "Options";
 		options.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
 		options.setPosition(FlxG.width / 2 - options.width / 2, FlxG.height / 2 + options.height);
+		options.alpha = 0.5;
 		options.antialiasing = true;
 		// Credits
 		credits = new FlxText();
@@ -60,6 +61,7 @@ class MenuState extends FlxState
 		exit.text = "Exit";
 		exit.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
 		exit.setPosition(FlxG.width / 2 - exit.width / 2, FlxG.height / 2 + exit.height * 3);
+		exit.alpha = 0.5;
 		exit.antialiasing = true;
 		// Menu
 		menu = new Array<FlxText>();
@@ -114,9 +116,6 @@ class MenuState extends FlxState
 			FlxG.camera.fade(FlxColor.BLACK, 2.0, false, ChangeState);
 			menuSelected.play();
 		}
-		
-		
-		
 		super.update(elapsed);
 	}
 	
@@ -128,6 +127,8 @@ class MenuState extends FlxState
 				FlxG.switchState(new PlayState());
 			case "Credits":
 				FlxG.switchState(new Credits());
+			case "Exit":
+				System.exit(0);
 			default:
 				trace("State not found");
 		}
