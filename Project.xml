@@ -41,7 +41,7 @@
 	<haxelib name="flixel-addons" />
 	
 	<!--In case you want to use the ui package-->
-	<haxelib name="flixel-ui"/>
+	<!--<haxelib name="flixel-ui"/>-->
 	
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape" />-->
@@ -59,8 +59,9 @@
 	
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
 	<haxedef name="FLX_NO_MOUSE" if="mobile" />
-	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
-	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+	<haxedef name="FLX_NO_KEYBOARD" if="mobile" /> 
+	<haxedef name="FLX_NO_TOUCH" if="desktop" /> 
+	
 	<!--haxedef name="FLX_NO_GAMEPAD" /-->
 	
 	<!--Disable the Flixel core sound tray-->

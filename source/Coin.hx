@@ -37,7 +37,7 @@ class Coin extends FlxSprite
 				onStart: pickedStart,
 				onUpdate: pickedUpdate, 
 				onComplete: pickedComplete,
-				type: FlxTween.ONESHOT
+				type: FlxTweenType.ONESHOT
 			}
 		);	
 	}

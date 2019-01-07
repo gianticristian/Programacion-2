@@ -2,7 +2,7 @@ package;
 
 import flixel.FlxGame;
 import openfl.display.Sprite;
-//import flixel.FlxG;
+import flixel.FlxG;
 
 class Main extends Sprite
 {
@@ -10,9 +10,7 @@ class Main extends Sprite
 	{
 		super();
 		addChild(new FlxGame(0, 0, MenuState));
-		//addChild(new FlxGame(0, 0, PlayState));
-		
-		// debug
+		FlxG.mouse.visible = false;
 		//FlxG.debugger.visible = true;
 		//FlxG.debugger.drawDebug = true;
 	}

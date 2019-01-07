@@ -37,9 +37,6 @@ class PlayState extends FlxState
 	override public function create () : Void 
 	{
 		PlayState.instance = this;
-		
-		//FlxG.mouse.visible = false;
-		
 		createPool();
 		coins = new FlxGroup();
 		enemies = new FlxTypedGroup<Enemy>();
