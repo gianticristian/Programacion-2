@@ -1,7 +1,8 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxState;
+//import flixel.FlxState;
+import flixel.FlxSubState;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -9,7 +10,7 @@ import flixel.system.FlxSound;
 
 using flixel.util.FlxSpriteUtil;
 
-class Credits extends FlxState 
+class Credits extends FlxSubState 
 {
 	private var title : FlxText;
 	private var name : FlxText;
@@ -21,7 +22,9 @@ class Credits extends FlxState
 	override public function create () : Void
 	{
 		super.create();
-		camera.bgColor.setRGB(0,153,255);
+		_parentState.persistentDraw = false;
+		_parentState.persistentUpdate = false;
+		set_bgColor(FlxColor.fromRGB(0, 153, 255));
 		// Title
 		title = new FlxText(0, 70, FlxG.width);
 		title.text = "Credits";
@@ -57,17 +60,18 @@ class Credits extends FlxState
 	
 	override public function update (elapsed : Float) : Void
 	{
+		super.update(elapsed);
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
 		{
-			FlxG.camera.fade(FlxColor.BLACK, 2.0, false, ChangeState);
+			FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ChangeState);
 			menuSelected.play();
 		}
-		super.update(elapsed);
 	}
 	
 	private function ChangeState () : Void
 	{
-		FlxG.switchState(new MenuState());
+		camera.fade(FlxColor.TRANSPARENT, 0.5, true);
+		close();
 	}	
 	
 }

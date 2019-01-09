@@ -17,8 +17,7 @@ class MenuState extends FlxState
 	private var start : FlxText;
 	private var options : FlxText;
 	private var credits : FlxText;
-	private var exit : FlxText;
-	
+	private var exit : FlxText;	
 	
 	private var pointer: FlxSprite; 
 	private var menu : Array<FlxText>;
@@ -27,10 +26,12 @@ class MenuState extends FlxState
 	private var menuSelected : FlxSound;
 	private var menuMusic : FlxSound;
 	
+	private var creditsState : Credits;
+	
 	override public function create () : Void
 	{
 		super.create();
-		camera.bgColor.setRGB(255,77,77);
+		set_bgColor(FlxColor.fromRGB(255, 77, 77));
 		// Title
 		title = new FlxText(0, 70, FlxG.width);
 		title.text = "Titulo Principal";
@@ -118,7 +119,7 @@ class MenuState extends FlxState
 		}
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
 		{
-			FlxG.camera.fade(FlxColor.BLACK, 2.0, false, ChangeState);
+			FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ChangeState);
 			menuSelected.play();
 		}
 		super.update(elapsed);
@@ -130,8 +131,10 @@ class MenuState extends FlxState
 		{
 			case "Start":
 				FlxG.switchState(new PlayState());
-			case "Credits":
-				FlxG.switchState(new Credits());
+			case "Credits":			
+				creditsState = new Credits();
+				openSubState(creditsState);	
+				camera.fade(FlxColor.TRANSPARENT, 0.5, true);
 			case "Exit":
 				System.exit(0);
 			default:
