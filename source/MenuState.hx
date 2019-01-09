@@ -25,6 +25,7 @@ class MenuState extends FlxState
 	private var selected : Int = 0;
 	private var menuChange : FlxSound;
 	private var menuSelected : FlxSound;
+	private var menuMusic : FlxSound;
 	
 	override public function create () : Void
 	{
@@ -85,6 +86,10 @@ class MenuState extends FlxState
 		menuChange.volume = 1;
 		menuSelected = FlxG.sound.load("assets/sounds/MenuSelected.wav");
 		menuSelected.volume = 1;
+		menuMusic = FlxG.sound.load("assets/sounds/MenuMusic.wav");
+		menuMusic.looped = true;
+		menuMusic.volume = 1;
+		menuMusic.play();
 	}
 
 	override public function update (elapsed : Float) : Void
