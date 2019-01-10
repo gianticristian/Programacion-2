@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.system.FlxSound;
 import flash.system.System;
+import flixel.util.FlxSave;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -27,6 +28,9 @@ class MenuState extends FlxState
 	private var menuMusic : FlxSound;
 	
 	private var creditsState : Credits;
+	private var optionsState : Options;
+	
+	public var save : FlxSave;
 	
 	override public function create () : Void
 	{
@@ -87,10 +91,10 @@ class MenuState extends FlxState
 		menuChange.volume = 1;
 		menuSelected = FlxG.sound.load("assets/sounds/MenuSelected.wav");
 		menuSelected.volume = 1;
-		menuMusic = FlxG.sound.load("assets/sounds/MenuMusic.wav");
-		menuMusic.looped = true;
-		menuMusic.volume = 1;
-		menuMusic.play();
+		if (FlxG.sound.music == null)
+			FlxG.sound.playMusic("assets/sounds/MenuMusic.wav", 1, true);
+		// Save file
+		save = new FlxSave();
 	}
 
 	override public function update (elapsed : Float) : Void
@@ -131,6 +135,10 @@ class MenuState extends FlxState
 		{
 			case "Start":
 				FlxG.switchState(new PlayState());
+			case "Options":			
+				optionsState = new Options();
+				openSubState(optionsState);	
+				camera.fade(FlxColor.TRANSPARENT, 0.5, true);	
 			case "Credits":			
 				creditsState = new Credits();
 				openSubState(creditsState);	
