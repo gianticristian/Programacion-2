@@ -18,7 +18,7 @@ class Main extends Sprite
 		save = new FlxSave();
 		save.bind("musicVolume");
 		if (save.data.volume != null)
-			FlxG.sound.volume = save.data.volume;
+			FlxG.sound.music.volume = save.data.volume;
 		save.close();
 		
 		//FlxG.debugger.visible = true;
