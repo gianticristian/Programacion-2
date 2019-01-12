@@ -5,9 +5,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
 import flash.system.System;
-import flixel.util.FlxSave;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -23,14 +21,14 @@ class MenuState extends FlxState
 	private var pointer: FlxSprite; 
 	private var menu : Array<FlxText>;
 	private var selected : Int = 0;
-	private var menuChange : FlxSound;
-	private var menuSelected : FlxSound;
-	private var menuMusic : FlxSound;
 	
+	//private var sfxGroup : FlxSoundGroup;
+	//private var menuChange : FlxSound;
+	//private var menuSelected : FlxSound;
+		
 	private var creditsState : Credits;
 	private var optionsState : Options;
 	
-	public var save : FlxSave;
 	
 	override public function create () : Void
 	{
@@ -86,15 +84,8 @@ class MenuState extends FlxState
 		pointer.drawRect(0, 5, 5, 40, FlxColor.WHITE);
 		pointer.drawRect(245, 5, 5, 40, FlxColor.WHITE);
 		add(pointer);
-		// Sound
-		menuChange = FlxG.sound.load("assets/sounds/MenuChange.wav");
-		menuChange.volume = 1;
-		menuSelected = FlxG.sound.load("assets/sounds/MenuSelected.wav");
-		menuSelected.volume = 1;
-		if (FlxG.sound.music == null)
-			FlxG.sound.playMusic("assets/sounds/MenuMusic.wav", 1, true);
-		// Save file
-		save = new FlxSave();
+		
+		Sound.instance.PlayMusic("MainMenu");		
 	}
 
 	override public function update (elapsed : Float) : Void
@@ -107,7 +98,7 @@ class MenuState extends FlxState
 				selected--;
 				menu[selected].alpha = 1;
 				pointer.y = menu[selected].y;
-				menuChange.play();
+				Sound.instance.menuChange.play();
 			}
 		}
 		if (FlxG.keys.anyJustPressed([DOWN, S]))
@@ -118,13 +109,13 @@ class MenuState extends FlxState
 				selected++;
 				menu[selected].alpha = 1;
 				pointer.y = menu[selected].y;
-				menuChange.play();
+				Sound.instance.menuChange.play();
 			}
 		}
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ChangeState);
-			menuSelected.play();
+			Sound.instance.menuSelected.play();
 		}
 		super.update(elapsed);
 	}
@@ -144,9 +135,20 @@ class MenuState extends FlxState
 				openSubState(creditsState);	
 				camera.fade(FlxColor.TRANSPARENT, 0.5, true);
 			case "Exit":
+				Save.instance.Close();
 				System.exit(0);
 			default:
 				trace("State not found");
 		}
 	}	
+	
+	private function UpdateMusicVolume () : Void
+	{
+		//FlxG.sound.music.volume = Save.instance.LoadMusicVolume();
+	}
+	
+	private function UpdateSfxVolume () : Void
+	{
+		//sfxGroup.volume = Save.instance.LoadSfxVolume();
+	}
 }

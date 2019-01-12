@@ -2,13 +2,10 @@ package;
 
 import flixel.FlxSprite;
 import flixel.FlxSubState;
-import flixel.system.FlxSound;
-import flixel.system.FlxSoundGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.FlxG;
-import flixel.util.FlxSave;
 using flixel.util.FlxSpriteUtil;
 
 
@@ -16,13 +13,15 @@ class Options extends FlxSubState
 {
 	private var title : FlxText;
 	private var pointer: FlxSprite; 
+	private var back : FlxText;
+	
 	private var musicVolume : FlxText;
 	private var musicVolumeDown : FlxSprite;
 	private var musicVolumeUp : FlxSprite;
 	private var musicVolumeBar : FlxBar;
 	private var musicVolumeBarDistance : Int = 0;
 	private var musicVolumeBarText : FlxText;
-	private var sfxGroup : FlxSoundGroup;
+	
 	private var sfxVolume : FlxText;
 	private var sfxVolumeDown : FlxSprite;
 	private var sfxVolumeUp : FlxSprite;
@@ -30,9 +29,6 @@ class Options extends FlxSubState
 	private var sfxVolumeBarDistance : Int = 0;
 	private var sfxVolumeBarText : FlxText;
 	
-	private var back : FlxText;
-	private var menuSelected : FlxSound;
-	private var save: FlxSave;
 
 	override public function create () : Void 
 	{
@@ -40,7 +36,6 @@ class Options extends FlxSubState
 		_parentState.persistentDraw = false;
 		_parentState.persistentUpdate = false;
 		set_bgColor(FlxColor.fromRGB(0, 204, 102));
-		sfxGroup = new FlxSoundGroup();
 		// Title
 		title = new FlxText(0, 70, FlxG.width);
 		title.text = "Options";
@@ -106,7 +101,6 @@ class Options extends FlxSubState
 		add(sfxVolumeBar);
 		// SfxVolumeBarText
 		sfxVolumeBarText = new FlxText();
-		UpdateSfxVolume();
 		sfxVolumeBarText.setFormat("assets/fonts/Minercraftory.ttf", 12, bgColor, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.WHITE);
 		sfxVolumeBarText.setPosition((sfxVolumeBar.x + sfxVolumeBar.width / 2) - sfxVolumeBarText.width / 2, sfxVolumeBar.y - 1);
 		sfxVolumeBarText.antialiasing = true;
@@ -127,19 +121,9 @@ class Options extends FlxSubState
 		pointer.drawRect(0, 5, 5, 40, FlxColor.WHITE);
 		pointer.drawRect(245, 5, 5, 40, FlxColor.WHITE);
 		add(pointer);
-		// Sound
-		menuSelected = FlxG.sound.load("assets/sounds/MenuSelected.wav");
-		menuSelected.volume = 1;
-		
-		
-		sfxGroup.add(menuSelected);
-		
-		
-		save = new FlxSave();
-		save.bind("musicVolume");
-		save.bind("sfxVolume");
-		
-		UpdateMusicVolume();
+
+		UpdateSfxVolumeUI();
+		UpdateMusicVolumeUI();
 	}
 	
 	override public function update (elapsed : Float) : Void
@@ -148,53 +132,50 @@ class Options extends FlxSubState
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ChangeState);
-			menuSelected.play();
+			Sound.instance.menuSelected.play();
 		}
 		if (FlxG.keys.anyJustPressed([LEFT, A]))
 		{
-			FlxG.sound.music.volume -= 0.1;
-			UpdateMusicVolume();
-			menuSelected.play();
+			Sound.instance.SetMusicVolume(-0.1);
+			Sound.instance.menuSelected.play();
+			UpdateMusicVolumeUI();
 		}
 		if (FlxG.keys.anyJustPressed([RIGHT, D]))
 		{
-			FlxG.sound.music.volume += 0.1;
-			UpdateMusicVolume();
-			menuSelected.play();
+			Sound.instance.SetMusicVolume(0.1);
+			Sound.instance.menuSelected.play();
+			UpdateMusicVolumeUI();
 		}
 		if (FlxG.keys.anyJustPressed([Z]))
 		{
-			sfxGroup.volume -= 0.1;
-			UpdateSfxVolume();
-			menuSelected.play();
+			Sound.instance.SetSfxVolume(-0.1);
+			Sound.instance.menuSelected.play();
+			UpdateSfxVolumeUI();
 		}
 		if (FlxG.keys.anyJustPressed([X]))
 		{
-			sfxGroup.volume += 0.1;
-			UpdateSfxVolume();
-			menuSelected.play();
+			Sound.instance.SetSfxVolume(0.1);
+			Sound.instance.menuSelected.play();
+			UpdateSfxVolumeUI();
 		}
 	}
 	
 	private function ChangeState () : Void
 	{
-		save.close();
 		camera.fade(FlxColor.TRANSPARENT, 0.5, true);
 		close();
 	}	
 	
-	private function UpdateMusicVolume () : Void
+	private function UpdateMusicVolumeUI () : Void
 	{
-		save.data.musicVolume = FlxG.sound.music.volume;
 		var volume:Int = Math.round(FlxG.sound.music.volume * 100);
 		musicVolumeBar.value = volume;
 		musicVolumeBarText.text = Std.string(volume);
 	}
 	
-	private function UpdateSfxVolume () : Void
+	private function UpdateSfxVolumeUI () : Void
 	{
-		save.data.sfxVolume = sfxGroup.volume;
-		var volume:Int = Math.round(sfxGroup.volume * 100);
+		var volume:Int = Math.round(Sound.instance.sfxGroup.volume * 100);
 		sfxVolumeBar.value = volume;
 		sfxVolumeBarText.text = Std.string(volume);
 	}
