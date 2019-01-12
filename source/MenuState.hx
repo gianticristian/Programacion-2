@@ -21,14 +21,9 @@ class MenuState extends FlxState
 	private var pointer: FlxSprite; 
 	private var menu : Array<FlxText>;
 	private var selected : Int = 0;
-	
-	//private var sfxGroup : FlxSoundGroup;
-	//private var menuChange : FlxSound;
-	//private var menuSelected : FlxSound;
-		
+
 	private var creditsState : Credits;
 	private var optionsState : Options;
-	
 	
 	override public function create () : Void
 	{
@@ -141,14 +136,4 @@ class MenuState extends FlxState
 				trace("State not found");
 		}
 	}	
-	
-	private function UpdateMusicVolume () : Void
-	{
-		//FlxG.sound.music.volume = Save.instance.LoadMusicVolume();
-	}
-	
-	private function UpdateSfxVolume () : Void
-	{
-		//sfxGroup.volume = Save.instance.LoadSfxVolume();
-	}
 }

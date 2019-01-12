@@ -13,6 +13,7 @@ class Sound
 	public var menuSelected : FlxSound;
 	
 	public var mainMenuMusic : String = "assets/sounds/MenuMusic.wav";
+	public var levelMusic : String = "assets/sounds/Level Music.wav";
 	
 	
 	private function new () : Void
@@ -50,6 +51,8 @@ class Sound
 		{
 			case "MainMenu":
 				FlxG.sound.playMusic(mainMenuMusic);	
+			case "Level":
+				FlxG.sound.playMusic(levelMusic);	
 			default:
 				FlxG.sound.pause();
 		}		

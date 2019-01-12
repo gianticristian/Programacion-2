@@ -80,12 +80,7 @@ class PlayState extends FlxState
 		ui.updateMoney(player.money);
 		ui.updateHealth(player.health);
 		
-		// SFX
-		music = FlxG.sound.load("assets/sounds/Level Music.wav");
-		music.looped = true;
-		music.volume = 0.3;
-		music.play();
-		
+		Sound.instance.PlayMusic("Level");
 		
 		super.create();
 	}

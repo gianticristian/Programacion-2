@@ -12,7 +12,6 @@ using flixel.util.FlxSpriteUtil;
 class Options extends FlxSubState 
 {
 	private var title : FlxText;
-	private var pointer: FlxSprite; 
 	private var back : FlxText;
 	
 	private var musicVolume : FlxText;
@@ -29,6 +28,9 @@ class Options extends FlxSubState
 	private var sfxVolumeBarDistance : Int = 0;
 	private var sfxVolumeBarText : FlxText;
 	
+	private var pointer: FlxSprite; 
+	private var menu : Array<FlxText>;
+	private var selected : Int = 0;
 
 	override public function create () : Void 
 	{
@@ -48,7 +50,7 @@ class Options extends FlxSubState
 		musicVolume.setFormat("assets/fonts/Minercraftory.ttf", 20, FlxColor.WHITE, FlxTextAlign.CENTER);
 		musicVolume.setPosition(FlxG.width / 2 - musicVolume.width / 2, FlxG.height / 2 - musicVolume.height * 3);
 		musicVolume.antialiasing = true;
-		add(musicVolume);
+		musicVolume.alpha = 0.5;
 		// MusicVolumeDown
 		musicVolumeDown = new FlxSprite();
 		musicVolumeDown.makeGraphic(20, 20, FlxColor.TRANSPARENT, true);
@@ -80,7 +82,7 @@ class Options extends FlxSubState
 		sfxVolume.setFormat("assets/fonts/Minercraftory.ttf", 20, FlxColor.WHITE, FlxTextAlign.CENTER);
 		sfxVolume.setPosition(FlxG.width / 2 - sfxVolume.width / 2, FlxG.height / 2);
 		sfxVolume.antialiasing = true;
-		add(sfxVolume);
+		sfxVolume.alpha = 0.5;
 		// SfxVolumeDown
 		sfxVolumeDown = new FlxSprite();
 		sfxVolumeDown.makeGraphic(20, 20, FlxColor.TRANSPARENT, true);
@@ -111,7 +113,15 @@ class Options extends FlxSubState
 		back.setFormat("assets/fonts/Minercraftory.ttf", 30, FlxColor.WHITE, FlxTextAlign.CENTER);
 		back.setPosition(FlxG.width / 2 - back.width / 2, FlxG.height / 2 + back.height * 3);
 		back.antialiasing = true;
-		add(back);
+		
+		// Menu
+		menu = new Array<FlxText>();
+		menu.push(musicVolume);
+		menu.push(sfxVolume);
+		menu.push(back);
+		for (item in menu)
+			add(item);
+			
 		// Pointer
 		pointer = new FlxSprite();
 		pointer.makeGraphic(250, 50, FlxColor.TRANSPARENT, true);
@@ -121,7 +131,8 @@ class Options extends FlxSubState
 		pointer.drawRect(0, 5, 5, 40, FlxColor.WHITE);
 		pointer.drawRect(245, 5, 5, 40, FlxColor.WHITE);
 		add(pointer);
-
+		selected = menu.length - 1;
+		
 		UpdateSfxVolumeUI();
 		UpdateMusicVolumeUI();
 	}
@@ -130,40 +141,59 @@ class Options extends FlxSubState
 	{
 		super.update(elapsed);
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
-		{
-			FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ChangeState);
-			Sound.instance.menuSelected.play();
-		}
+			if (menu[selected] == back) 
+				Back();
 		if (FlxG.keys.anyJustPressed([LEFT, A]))
-		{
-			Sound.instance.SetMusicVolume(-0.1);
-			Sound.instance.menuSelected.play();
-			UpdateMusicVolumeUI();
-		}
+			ClickSelected(-0.1);
 		if (FlxG.keys.anyJustPressed([RIGHT, D]))
+			ClickSelected(0.1);
+	
+		if (FlxG.keys.anyJustPressed([UP, W]))
 		{
-			Sound.instance.SetMusicVolume(0.1);
-			Sound.instance.menuSelected.play();
-			UpdateMusicVolumeUI();
+			if (selected > 0)
+			{
+				menu[selected].alpha = 0.5;
+				selected--;
+				menu[selected].alpha = 1;
+				pointer.y = menu[selected].y;
+				Sound.instance.menuChange.play();
+			}
 		}
-		if (FlxG.keys.anyJustPressed([Z]))
+		if (FlxG.keys.anyJustPressed([DOWN, S]))
 		{
-			Sound.instance.SetSfxVolume(-0.1);
-			Sound.instance.menuSelected.play();
-			UpdateSfxVolumeUI();
-		}
-		if (FlxG.keys.anyJustPressed([X]))
-		{
-			Sound.instance.SetSfxVolume(0.1);
-			Sound.instance.menuSelected.play();
-			UpdateSfxVolumeUI();
+			if (selected < menu.length - 1)
+			{
+				menu[selected].alpha = 0.5;
+				selected++;
+				menu[selected].alpha = 1;
+				pointer.y = menu[selected].y;
+				Sound.instance.menuChange.play();
+			}
 		}
 	}
 	
-	private function ChangeState () : Void
+	private function ClickSelected (amount : Float = null)
 	{
+		if (menu[selected] == musicVolume)
+		{
+			Sound.instance.SetMusicVolume(amount);
+			UpdateMusicVolumeUI();
+		}
+		else if (menu[selected] == sfxVolume) 
+		{
+			Sound.instance.SetSfxVolume(amount);
+			UpdateSfxVolumeUI();
+		}
+		else 
+			return;
+		Sound.instance.menuSelected.play();
+	}
+	
+	private function Back () : Void
+	{
+		Sound.instance.menuSelected.play();
 		camera.fade(FlxColor.TRANSPARENT, 0.5, true);
-		close();
+		close();	
 	}	
 	
 	private function UpdateMusicVolumeUI () : Void
