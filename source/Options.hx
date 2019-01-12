@@ -14,6 +14,7 @@ class Options extends FlxSubState
 	private var title : FlxText;
 	private var back : FlxText;
 	
+	private var musicVolumeGroup : Array<FlxSprite>;
 	private var musicVolume : FlxText;
 	private var musicVolumeDown : FlxSprite;
 	private var musicVolumeUp : FlxSprite;
@@ -21,6 +22,7 @@ class Options extends FlxSubState
 	private var musicVolumeBarDistance : Int = 0;
 	private var musicVolumeBarText : FlxText;
 	
+	private var sfxVolumeGroup : Array<FlxSprite>;
 	private var sfxVolume : FlxText;
 	private var sfxVolumeDown : FlxSprite;
 	private var sfxVolumeUp : FlxSprite;
@@ -38,75 +40,102 @@ class Options extends FlxSubState
 		_parentState.persistentDraw = false;
 		_parentState.persistentUpdate = false;
 		set_bgColor(FlxColor.fromRGB(0, 204, 102));
+		
 		// Title
 		title = new FlxText(0, 70, FlxG.width);
 		title.text = "Options";
 		title.setFormat("assets/fonts/Minercraftory.ttf", 50, FlxColor.WHITE, FlxTextAlign.CENTER);
 		title.antialiasing = true;
 		add(title);
+		
 		// MusicVolume
 		musicVolume = new FlxText();
 		musicVolume.text = "Music";
 		musicVolume.setFormat("assets/fonts/Minercraftory.ttf", 20, FlxColor.WHITE, FlxTextAlign.CENTER);
 		musicVolume.setPosition(FlxG.width / 2 - musicVolume.width / 2, FlxG.height / 2 - musicVolume.height * 3);
-		musicVolume.antialiasing = true;
-		musicVolume.alpha = 0.5;
+		
 		// MusicVolumeDown
 		musicVolumeDown = new FlxSprite();
 		musicVolumeDown.makeGraphic(20, 20, FlxColor.TRANSPARENT, true);
 		musicVolumeDown.setPosition(FlxG.width / 2 - musicVolumeDown.width * 8, musicVolume.y + musicVolume.height * 1.5); 
-		musicVolumeDown.drawRect(0, musicVolumeDown.height / 2 - 2.5, 20, 5, FlxColor.WHITE);
-		add(musicVolumeDown);
+		musicVolumeDown.drawRect(0, musicVolumeDown.height / 2 - 2.5, 20, 5, FlxColor.WHITE);	
+		
 		// MusicVolumeUp
 		musicVolumeUp = new FlxSprite();
 		musicVolumeUp.makeGraphic(20, 20, FlxColor.TRANSPARENT, true);
 		musicVolumeUp.setPosition(FlxG.width / 2 + musicVolumeUp.width * 8, musicVolume.y + musicVolume.height * 1.5); 
 		musicVolumeUp.drawRect(0, musicVolumeUp.height / 2 - 2.5, 20, 5, FlxColor.WHITE);
 		musicVolumeUp.drawRect(musicVolumeUp.width / 2 - 2.5, 0, 5, 20, FlxColor.WHITE);
-		add(musicVolumeUp);
+		
 		// MusicVolumeBar
 		musicVolumeBarDistance = Std.int((musicVolumeUp.x - musicVolumeUp.width) - (musicVolumeDown.x + musicVolumeDown.width));
 		musicVolumeBar = new FlxBar(musicVolumeDown.x + musicVolumeDown.width * 1.5, musicVolumeDown.y, LEFT_TO_RIGHT, musicVolumeBarDistance, Std.int(musicVolumeUp.height));
 		musicVolumeBar.createFilledBar(bgColor, FlxColor.WHITE, true, FlxColor.WHITE);
-		add(musicVolumeBar);
+	
 		// MusicVolumeBarText
 		musicVolumeBarText = new FlxText();
 		musicVolumeBarText.text = "0";
 		musicVolumeBarText.setFormat("assets/fonts/Minercraftory.ttf", 12, bgColor, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.WHITE);
 		musicVolumeBarText.setPosition((musicVolumeBar.x + musicVolumeBar.width / 2) - musicVolumeBarText.width / 2, musicVolumeBar.y - 1);
-		musicVolumeBarText.antialiasing = true;
-		add(musicVolumeBarText);	
+		
+		// MusicVolumeGroup
+		musicVolumeGroup = new Array<FlxSprite>();
+		musicVolumeGroup.push(musicVolume);
+		musicVolumeGroup.push(musicVolumeDown);
+		musicVolumeGroup.push(musicVolumeUp);
+		musicVolumeGroup.push(musicVolumeBar);
+		musicVolumeGroup.push(musicVolumeBarText);
+		for (item in musicVolumeGroup)
+		{
+			item.antialiasing = true;
+			add(item);
+		}
+			
+		
+		
 		// SfxVolume
 		sfxVolume = new FlxText();
 		sfxVolume.text = "SFX";
 		sfxVolume.setFormat("assets/fonts/Minercraftory.ttf", 20, FlxColor.WHITE, FlxTextAlign.CENTER);
 		sfxVolume.setPosition(FlxG.width / 2 - sfxVolume.width / 2, FlxG.height / 2);
-		sfxVolume.antialiasing = true;
-		sfxVolume.alpha = 0.5;
+		
 		// SfxVolumeDown
 		sfxVolumeDown = new FlxSprite();
 		sfxVolumeDown.makeGraphic(20, 20, FlxColor.TRANSPARENT, true);
 		sfxVolumeDown.setPosition(FlxG.width / 2 - sfxVolumeDown.width * 8, sfxVolume.y + sfxVolume.height * 1.5); 
 		sfxVolumeDown.drawRect(0, sfxVolumeDown.height / 2 - 2.5, 20, 5, FlxColor.WHITE);
-		add(sfxVolumeDown);
+		
 		// SfxVolumeUp
 		sfxVolumeUp = new FlxSprite();
 		sfxVolumeUp.makeGraphic(20, 20, FlxColor.TRANSPARENT, true);
 		sfxVolumeUp.setPosition(FlxG.width / 2 + sfxVolumeUp.width * 8, sfxVolume.y + sfxVolume.height * 1.5); 
 		sfxVolumeUp.drawRect(0, sfxVolumeUp.height / 2 - 2.5, 20, 5, FlxColor.WHITE);
 		sfxVolumeUp.drawRect(sfxVolumeUp.width / 2 - 2.5, 0, 5, 20, FlxColor.WHITE);
-		add(sfxVolumeUp);
+
 		// SfxVolumeBar
 		sfxVolumeBarDistance = Std.int((sfxVolumeUp.x - sfxVolumeUp.width) - (sfxVolumeDown.x + sfxVolumeDown.width));
 		sfxVolumeBar = new FlxBar(sfxVolumeDown.x + sfxVolumeDown.width * 1.5, sfxVolumeDown.y, LEFT_TO_RIGHT, sfxVolumeBarDistance, Std.int(sfxVolumeUp.height));
 		sfxVolumeBar.createFilledBar(bgColor, FlxColor.WHITE, true, FlxColor.WHITE);
-		add(sfxVolumeBar);
+		
 		// SfxVolumeBarText
 		sfxVolumeBarText = new FlxText();
 		sfxVolumeBarText.setFormat("assets/fonts/Minercraftory.ttf", 12, bgColor, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.WHITE);
 		sfxVolumeBarText.setPosition((sfxVolumeBar.x + sfxVolumeBar.width / 2) - sfxVolumeBarText.width / 2, sfxVolumeBar.y - 1);
-		sfxVolumeBarText.antialiasing = true;
-		add(sfxVolumeBarText);
+		
+		// SfxVolumeGroup
+		sfxVolumeGroup = new Array<FlxSprite>();
+		sfxVolumeGroup.push(sfxVolume);
+		sfxVolumeGroup.push(sfxVolumeDown);
+		sfxVolumeGroup.push(sfxVolumeUp);
+		sfxVolumeGroup.push(sfxVolumeBar);
+		sfxVolumeGroup.push(sfxVolumeBarText);
+		for (item in sfxVolumeGroup)
+		{
+			item.antialiasing = true;
+			add(item);
+		}
+		
+		
 		// Back
 		back = new FlxText();
 		back.text = "Back";
@@ -135,6 +164,7 @@ class Options extends FlxSubState
 		
 		UpdateSfxVolumeUI();
 		UpdateMusicVolumeUI();
+		Diselect();
 	}
 	
 	override public function update (elapsed : Float) : Void
@@ -144,9 +174,9 @@ class Options extends FlxSubState
 			if (menu[selected] == back) 
 				Back();
 		if (FlxG.keys.anyJustPressed([LEFT, A]))
-			ClickSelected(-0.1);
+			ChangeAmount(-0.1);
 		if (FlxG.keys.anyJustPressed([RIGHT, D]))
-			ClickSelected(0.1);
+			ChangeAmount(0.1);
 	
 		if (FlxG.keys.anyJustPressed([UP, W]))
 		{
@@ -172,7 +202,15 @@ class Options extends FlxSubState
 		}
 	}
 	
-	private function ClickSelected (amount : Float = null)
+	private function Diselect ()
+	{
+		for (item in musicVolumeGroup)
+			item.alpha = 0.5;
+		for (item in sfxVolumeGroup)
+			item.alpha = 0.5;
+	}
+	
+	private function ChangeAmount (amount : Float = null)
 	{
 		if (menu[selected] == musicVolume)
 		{
