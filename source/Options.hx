@@ -33,6 +33,7 @@ class Options extends FlxSubState
 	private var pointer: FlxSprite; 
 	private var menu : Array<FlxText>;
 	private var selected : Int = 0;
+	
 
 	override public function create () : Void 
 	{
@@ -164,7 +165,7 @@ class Options extends FlxSubState
 		
 		UpdateSfxVolumeUI();
 		UpdateMusicVolumeUI();
-		Diselect();
+		DeselectAll();
 	}
 	
 	override public function update (elapsed : Float) : Void
@@ -181,33 +182,46 @@ class Options extends FlxSubState
 		if (FlxG.keys.anyJustPressed([UP, W]))
 		{
 			if (selected > 0)
-			{
-				menu[selected].alpha = 0.5;
-				selected--;
-				menu[selected].alpha = 1;
-				pointer.y = menu[selected].y;
-				Sound.instance.menuChange.play();
-			}
+				ChangeSelection(-1);
 		}
 		if (FlxG.keys.anyJustPressed([DOWN, S]))
 		{
 			if (selected < menu.length - 1)
-			{
-				menu[selected].alpha = 0.5;
-				selected++;
-				menu[selected].alpha = 1;
-				pointer.y = menu[selected].y;
-				Sound.instance.menuChange.play();
-			}
+				ChangeSelection(1);
 		}
 	}
 	
-	private function Diselect ()
+	private function DeselectAll ()
 	{
 		for (item in musicVolumeGroup)
 			item.alpha = 0.5;
 		for (item in sfxVolumeGroup)
 			item.alpha = 0.5;
+	}
+	
+	private function ChangeSelection (scroll : Int)
+	{
+		ChangeSelectionAlpha(0.5);
+		selected += scroll;		
+		ChangeSelectionAlpha(1);
+		pointer.y = menu[selected].y;
+		Sound.instance.menuChange.play();
+	}
+	
+	private function ChangeSelectionAlpha (amount : Float)
+	{
+		if (menu[selected] == musicVolume)
+		{
+			for (item in musicVolumeGroup)
+				item.alpha = amount;
+		}
+		else if (menu[selected] == sfxVolume) 
+		{
+			for (item in sfxVolumeGroup)
+				item.alpha = amount;
+		}
+		else
+			return;
 	}
 	
 	private function ChangeAmount (amount : Float = null)
