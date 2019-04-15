@@ -23,7 +23,7 @@ class Enemy extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, true, false);	
 		
 		hurtSound = FlxG.sound.load("assets/sounds/Enemy Hurt.wav");
-		hurtSound.volume = 0.3;
+		Sound.instance.sfxGroup.add(hurtSound);
 	}
 	
 	override public function update (elapsed : Float)
@@ -65,11 +65,17 @@ class Enemy extends FlxSprite
 				{
 					onComplete: function(_) 
 					{
-						kill();
+						destroy();
 					}
 				});
 			}
 		});		
+	}
+	
+	override public function destroy ()
+	{
+		Sound.instance.sfxGroup.remove(hurtSound);
+		super.destroy();
 	}
 	
 	private function IsPlayerBehind()

@@ -1,23 +1,18 @@
 package;
 
 import flixel.FlxG;
-//import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
-
 using flixel.util.FlxSpriteUtil;
 
 class Credits extends FlxSubState 
 {
 	private var title : FlxText;
 	private var name : FlxText;
-
 	private var pointer: FlxSprite; 
 	private var back : FlxText;
-	private var menuSelected : FlxSound;
 	
 	override public function create () : Void
 	{
@@ -53,9 +48,6 @@ class Credits extends FlxSubState
 		pointer.drawRect(0, 5, 5, 40, FlxColor.WHITE);
 		pointer.drawRect(245, 5, 5, 40, FlxColor.WHITE);
 		add(pointer);
-		// Sound
-		menuSelected = FlxG.sound.load("assets/sounds/MenuSelected.wav");
-		menuSelected.volume = 1;
 	}
 	
 	override public function update (elapsed : Float) : Void
@@ -64,7 +56,7 @@ class Credits extends FlxSubState
 		if (FlxG.keys.anyJustPressed([ENTER, SPACE]))
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ChangeState);
-			menuSelected.play();
+			Sound.instance.menuSelected.play();
 		}
 	}
 	
@@ -72,6 +64,5 @@ class Credits extends FlxSubState
 	{
 		camera.fade(FlxColor.TRANSPARENT, 0.5, true);
 		close();
-	}	
-	
+	}		
 }

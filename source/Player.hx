@@ -52,11 +52,11 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		
 		jumpSound = FlxG.sound.load("assets/sounds/Jump.wav");
-		jumpSound.volume = 1;
+		Sound.instance.sfxGroup.add(jumpSound);
 		attackSound = FlxG.sound.load("assets/sounds/Attack.wav");
-		attackSound.volume = 1;
+		Sound.instance.sfxGroup.add(attackSound);
 		hurtSound = FlxG.sound.load("assets/sounds/Player Hurt.wav");
-		hurtSound.volume = 1;
+		Sound.instance.sfxGroup.add(hurtSound);
 		
 		animation.add("Idle", [0, 1, 2, 3], 2);
 		animation.add("Hurt", [4], 2, false);
@@ -102,6 +102,14 @@ class Player extends FlxSprite
 		super.update(elapsed);
     }
 		
+	override public function destroy ()
+	{
+		Sound.instance.sfxGroup.remove(jumpSound);
+		Sound.instance.sfxGroup.remove(attackSound);
+		Sound.instance.sfxGroup.remove(hurtSound);
+		super.destroy();
+	}
+	
 	public function input()
 	{
 		pressedLeft = FlxG.keys.anyPressed([LEFT, A]);
