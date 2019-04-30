@@ -13,7 +13,7 @@ class EnemyBlue extends Enemy
 		animation.add("Hurt", [13], 5, false);
 		animation.add("Die", [12], 1, false);
 		
-		lookRange = 75;
+		lookRange = 125;
 		health = 3;
 		damage = 1;
 		speed = 10;

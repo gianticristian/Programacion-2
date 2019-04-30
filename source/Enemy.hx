@@ -15,7 +15,6 @@ class Enemy extends FlxSprite
 	private var speed : Int;
 	private var maxSpeed : Int;
 	private var lookRange : Int;
-	private var angry : Bool = false;
 	
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
@@ -51,7 +50,8 @@ class Enemy extends FlxSprite
 		animation.finishCallback = function HurtContinue(_animation : String)
 		{
 			acceleration.x = accelerationTemp;
-			IsPlayerBehind();
+			if (IsPlayerBehind())
+				Turn();
 			animation.play("Walk");
 		}
 	}
@@ -82,12 +82,13 @@ class Enemy extends FlxSprite
 		super.destroy();
 	}
 	
-	private function IsPlayerBehind()
+	private function IsPlayerBehind() : Bool
 	{
-		if (PlayState.instance.player.x < x && facing == FlxObject.RIGHT)
-			Turn();
-		if (PlayState.instance.player.x > x && facing == FlxObject.LEFT)
-			Turn();
+		if (player.x < x && facing == FlxObject.RIGHT)
+			return true;
+		if (player.x > x && facing == FlxObject.LEFT)
+			return true;
+		return false;
 	}
 
 	public function Turn()
@@ -103,16 +104,15 @@ class Enemy extends FlxSprite
 	
 	private function SearchPlayer()
 	{
-		if (player != null && player.alive)
+		if (player != null && player.alive && player.y == y)
 		{
-			if (player.y == y)
+			if (!IsPlayerBehind() && Math.abs(x - player.x) < lookRange) 
 			{
-				// Left
-				if (player.x < x && player.x - x > -100)
-					trace("left:");
-				// Right
-				if (player.x > x && player.x - x < 100)
-					trace("right:");
+				trace("Attack!");
+			}	
+			else
+			{
+				trace("Where are?!");
 			}	
 		}
 	}

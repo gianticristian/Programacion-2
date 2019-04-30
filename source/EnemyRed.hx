@@ -13,7 +13,7 @@ class EnemyRed extends Enemy
 		animation.add("Hurt", [7], 5, false);
 		animation.add("Die", [6], 1, false);
 		
-		lookRange = 50;
+		lookRange = 75;
 		health = 2;
 		damage = 2;
 		speed = 20;
