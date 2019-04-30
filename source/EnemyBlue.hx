@@ -13,10 +13,13 @@ class EnemyBlue extends Enemy
 		animation.add("Hurt", [13], 5, false);
 		animation.add("Die", [12], 1, false);
 		
+		lookRange = 75;
 		health = 3;
 		damage = 1;
-		acceleration.set(-30, 300);
-		maxVelocity.set(30, 300);
+		speed = 10;
+		maxSpeed = 30; 
+		acceleration.set(-speed, 300);
+		maxVelocity.set(maxSpeed, 300);
 		
 		animation.play("Walk");
 	}

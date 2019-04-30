@@ -60,6 +60,9 @@ class PlayState extends FlxState
 		add(poolPunch);
 		add(poolKick);
 		
+		for (enemy in enemies)
+			enemy.player = player;
+		
 		// Level camera
 		cameraGame = new FlxCamera();
 		FlxG.cameras.reset(cameraGame);

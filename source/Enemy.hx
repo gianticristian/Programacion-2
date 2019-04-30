@@ -9,10 +9,13 @@ import flixel.tweens.FlxTween;
 
 class Enemy extends FlxSprite 
 {
-	public var damage : Int;
-    public var speed : Int;
-	public var maxSpeed : Int;
+	public var player : Player;
 	public var hurtSound : FlxSound;
+	public var damage : Int;
+	private var speed : Int;
+	private var maxSpeed : Int;
+	private var lookRange : Int;
+	private var angry : Bool = false;
 	
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
@@ -28,6 +31,7 @@ class Enemy extends FlxSprite
 	
 	override public function update (elapsed : Float)
     {
+		SearchPlayer();
 		super.update(elapsed);
     }
 	
@@ -95,5 +99,21 @@ class Enemy extends FlxSprite
 			
 		velocity.x *= 0;
 		acceleration.x *= -1;
+	}
+	
+	private function SearchPlayer()
+	{
+		if (player != null && player.alive)
+		{
+			if (player.y == y)
+			{
+				// Left
+				if (player.x < x && player.x - x > -100)
+					trace("left:");
+				// Right
+				if (player.x > x && player.x - x < 100)
+					trace("right:");
+			}	
+		}
 	}
 }

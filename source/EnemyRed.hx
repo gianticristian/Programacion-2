@@ -13,10 +13,13 @@ class EnemyRed extends Enemy
 		animation.add("Hurt", [7], 5, false);
 		animation.add("Die", [6], 1, false);
 		
+		lookRange = 50;
 		health = 2;
 		damage = 2;
-		acceleration.set(-30, 300);
-		maxVelocity.set(30, 300);
+		speed = 20;
+		maxSpeed = 50; 
+		acceleration.set(-speed, 300);
+		maxVelocity.set(maxSpeed, 300);
 		
 		animation.play("Walk");
 	}

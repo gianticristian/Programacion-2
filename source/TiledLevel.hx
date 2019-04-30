@@ -227,9 +227,6 @@ class TiledLevel extends TiledMap
 			case "player":		
 				var player = new Player(x, y, state.poolPunch, state.poolKick);
 				state.player = player;
-			//case "floor":
-				//var floor = new FlxObject(x, y, o.width, o.height);
-				//state.floor = floor;	
 			case "edge":
 				var edge = new FlxObject(x, y, o.width, o.height);
 				edge.immovable = true;
