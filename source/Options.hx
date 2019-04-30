@@ -118,6 +118,7 @@ class Options extends FlxSubState
 		
 		// SfxVolumeBarText
 		sfxVolumeBarText = new FlxText();
+		sfxVolumeBarText.text = "0";
 		sfxVolumeBarText.setFormat("assets/fonts/Minercraftory.ttf", 12, bgColor, FlxTextAlign.CENTER, FlxTextBorderStyle.NONE);
 		sfxVolumeBarText.setPosition(sfxVolumeBar.x + sfxVolumeBar.width / 2 - sfxVolumeBarText.width, sfxVolumeBar.y - 1);
 		
