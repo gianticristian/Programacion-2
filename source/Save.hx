@@ -24,6 +24,7 @@ class Save
 	public function SaveMusicVolume (volume : Float) : Void
 	{
 		save.data.musicVolume = volume;
+		save.flush();
 	}
 	
 	public function LoadMusicVolume () : Float
@@ -31,12 +32,15 @@ class Save
 		if (save.data.musicVolume != null)
 			return save.data.musicVolume;
 		else
+		{
 			return 1;
+		}
 	}
 	
 	public function SaveSfxVolume (volume : Float) : Void
 	{
 		save.data.sfxVolume = volume;
+		save.flush();
 	}
 	
 	public function LoadSfxVolume () : Float

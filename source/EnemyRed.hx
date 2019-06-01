@@ -18,6 +18,7 @@ class EnemyRed extends Enemy
 		damage = 2;
 		speed = 20;
 		maxSpeed = 50; 
+		aggressiveBoost = 90;
 		acceleration.set(-speed, 300);
 		maxVelocity.set(maxSpeed, 300);
 		

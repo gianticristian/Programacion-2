@@ -137,7 +137,6 @@ class Player extends FlxSprite
 			{
 				turn();
 				facing = FlxObject.RIGHT;
-
 			}
 			accelerate();
 		}

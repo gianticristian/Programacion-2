@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 
 
 class Enemy extends FlxSprite 
@@ -14,7 +15,9 @@ class Enemy extends FlxSprite
 	public var damage : Int;
 	private var speed : Int;
 	private var maxSpeed : Int;
+	private var aggressiveBoost : Int;
 	private var lookRange : Int;
+	private var isAggresive : Bool = false;
 	
 	
 	public function new(?X:Float=0, ?Y:Float=0) 
@@ -42,7 +45,6 @@ class Enemy extends FlxSprite
 		var accelerationTemp = acceleration.x;
 		acceleration.x = 0;
 		velocity.x = 0;
-
 		
 		if (health < 1)
 			Die();
@@ -107,13 +109,37 @@ class Enemy extends FlxSprite
 		if (player != null && player.alive && player.y == y)
 		{
 			if (!IsPlayerBehind() && Math.abs(x - player.x) < lookRange) 
-			{
-				trace("Attack!");
-			}	
+				Aggressive();
 			else
-			{
-				trace("Where are?!");
-			}	
+				Passive();
+		}
+	}
+	
+	private function Aggressive ()
+	{
+		if (!isAggresive)
+		{
+			color = FlxColor.RED;
+			if (facing == FlxObject.LEFT)
+				acceleration.x = -speed - aggressiveBoost;
+			else
+				acceleration.x = speed + aggressiveBoost;
+			maxVelocity.x = maxSpeed + aggressiveBoost;
+			isAggresive = true;
+		}
+	}
+	
+	private function Passive ()
+	{
+		if (isAggresive)
+		{
+			color = FlxColor.WHITE;
+			if (facing == FlxObject.LEFT)
+				acceleration.x = -speed;
+			else
+				acceleration.x = speed;
+			maxVelocity.x = maxSpeed;
+			isAggresive = false;
 		}
 	}
 }
