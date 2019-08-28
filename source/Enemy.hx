@@ -5,7 +5,6 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 
 
 class Enemy extends FlxSprite 
@@ -119,7 +118,6 @@ class Enemy extends FlxSprite
 	{
 		if (!isAggresive)
 		{
-			color = FlxColor.RED;
 			if (facing == FlxObject.LEFT)
 				acceleration.x = -speed - aggressiveBoost;
 			else
@@ -133,7 +131,6 @@ class Enemy extends FlxSprite
 	{
 		if (isAggresive)
 		{
-			color = FlxColor.WHITE;
 			if (facing == FlxObject.LEFT)
 				acceleration.x = -speed;
 			else
