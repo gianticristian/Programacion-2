@@ -226,6 +226,7 @@ class TiledLevel extends TiledMap
 		{
 			case "player":		
 				var player = new Player(x, y, state.poolPunch, state.poolKick);
+				player.Spawn();
 				state.player = player;
 			case "edge":
 				var edge = new FlxObject(x, y, o.width, o.height);

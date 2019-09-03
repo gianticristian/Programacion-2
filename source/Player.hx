@@ -29,7 +29,7 @@ class Player extends FlxSprite
 	private var spawnPoint : FlxPoint;
 	private var healthDefault : Int = 2;
 	
-	private var parachute : Paracuhte;
+	private var parachute : Parachute;
 	
 	public var jumpSound : FlxSound;
 	public var attackSound : FlxSound;
@@ -96,6 +96,8 @@ class Player extends FlxSprite
 		acceleration.y = gravity;
 		maxVelocity.set(maxSpeed, gravity);
 		attackPoint += width; 
+		
+		parachute = new Parachute(this);
 	}
 	
 	override public function update (elapsed : Float)
@@ -211,7 +213,7 @@ class Player extends FlxSprite
 		setPosition(spawnPoint.x, spawnPoint.y);
 		velocity.x = 0;
 		velocity.y = 0;
-		parachute = new Paracuhte(x, y - height, this);
+		parachute.Show();
 	}
 }
 
