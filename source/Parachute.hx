@@ -2,12 +2,14 @@ package;
 
 import flixel.FlxSprite;
 import flixel.FlxObject;
-
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 
 class Parachute extends FlxSprite 
 {
 	private var player : Player;
+	private var openSound : FlxSound;
 
 	public function new(_player : Player) 
 	{
@@ -17,6 +19,8 @@ class Parachute extends FlxSprite
 		loadGraphicFromSprite(player);
 		animation.add("Idle", [5], 1);
 		animation.play("Idle");
+		openSound = FlxG.sound.load("assets/sounds/Parachute.wav");
+		Sound.instance.sfxGroup.add(openSound);
 		Show();
 	}
 	
@@ -36,6 +40,7 @@ class Parachute extends FlxSprite
 	{
 		set_active(true);
 		set_visible(true);
+		openSound.play();
 	}
 	
 	public function Hide ()
