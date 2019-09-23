@@ -5,7 +5,6 @@ import flixel.FlxObject;
 import flixel.system.FlxSound;
 import flixel.FlxG;
 
-
 class Parachute extends FlxSprite 
 {
 	private var player : Player;
