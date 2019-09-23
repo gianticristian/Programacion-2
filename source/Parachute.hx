@@ -49,4 +49,9 @@ class Parachute extends FlxSprite
 		set_visible(false);
 	}
 	
+	override public function destroy()
+	{
+		Sound.instance.sfxGroup.remove(openSound);
+		super.destroy();
+	}
 }
